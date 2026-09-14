@@ -1,0 +1,2532 @@
+<!DOCTYPE html>
+
+<html lang="no">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+Lineære funksjoner
+</title>
+
+
+<script>
+
+window.MathJax = {
+
+    tex: {
+
+        inlineMath:
+            [['\\(','\\)']],
+
+        displayMath:
+            [['\\[','\\]']]
+
+    },
+
+    svg: {
+
+        fontCache:
+            'global'
+
+    }
+
+};
+
+</script>
+
+
+<script
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+
+
+<style>
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background:
+        #f3f5f8;
+
+    color:
+        #1f2937;
+
+}
+
+
+.page {
+
+    width:
+        min(
+            1000px,
+            calc(100% - 32px)
+        );
+
+    margin:
+        28px auto 50px;
+
+}
+
+
+.header {
+
+    text-align:
+        center;
+
+    margin-bottom:
+        20px;
+
+}
+
+
+.header h1 {
+
+    margin:
+        0;
+
+    font-size:
+        30px;
+
+    font-weight:
+        750;
+
+    letter-spacing:
+        -0.5px;
+
+}
+
+
+.header p {
+
+    margin:
+        7px 0 0;
+
+    color:
+        #667085;
+
+    font-size:
+        15px;
+
+}
+
+
+.top-row {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    gap:
+        14px;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+.progress-text,
+.score-text {
+
+    color:
+        #667085;
+
+    font-size:
+        14px;
+
+    font-weight:
+        650;
+
+}
+
+
+.progress-bar {
+
+    height:
+        7px;
+
+    background:
+        #e6eaf0;
+
+    border-radius:
+        999px;
+
+    overflow:
+        hidden;
+
+    margin-bottom:
+        14px;
+
+}
+
+
+.progress-fill {
+
+    height:
+        100%;
+
+    width:
+        0%;
+
+    background:
+        #2563eb;
+
+    border-radius:
+        999px;
+
+    transition:
+        width .25s ease;
+
+}
+
+
+.card {
+
+    background:
+        white;
+
+    border:
+        1px solid #e7eaf0;
+
+    border-radius:
+        20px;
+
+    box-shadow:
+        0 8px 28px
+        rgba(20, 30, 50, 0.06);
+
+}
+
+
+.task-card {
+
+    padding:
+        22px 28px 18px;
+
+    margin-bottom:
+        14px;
+
+}
+
+
+.task-label {
+
+    color:
+        #667085;
+
+    font-size:
+        12px;
+
+    font-weight:
+        750;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        0.12em;
+
+    margin-bottom:
+        4px;
+
+}
+
+
+.expression {
+
+    min-height:
+        72px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        32px;
+
+    color:
+        #111827;
+
+}
+
+
+.graph-card {
+
+    padding:
+        18px;
+
+}
+
+
+.graph-wrapper {
+
+    width:
+        100%;
+
+    overflow:
+        hidden;
+
+    border-radius:
+        15px;
+
+    background:
+        #fbfcfe;
+
+    border:
+        1px solid #edf0f4;
+
+}
+
+
+svg {
+
+    display:
+        block;
+
+    width:
+        100%;
+
+    height:
+        auto;
+
+    touch-action:
+        none;
+
+    user-select:
+        none;
+
+}
+
+
+.controls {
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    gap:
+        10px;
+
+    margin-top:
+        17px;
+
+    flex-wrap:
+        wrap;
+
+}
+
+
+button {
+
+    border:
+        0;
+
+    border-radius:
+        11px;
+
+    padding:
+        12px 20px;
+
+    font:
+        inherit;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+    transition:
+        transform .12s ease,
+        box-shadow .12s ease;
+
+}
+
+
+button:hover {
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+.check {
+
+    background:
+        #2563eb;
+
+    color:
+        white;
+
+    box-shadow:
+        0 5px 14px
+        rgba(37, 99, 235, .20);
+
+}
+
+
+.next {
+
+    background:
+        #16803c;
+
+    color:
+        white;
+
+    display:
+        none;
+
+}
+
+
+.reset {
+
+    background:
+        #eef1f5;
+
+    color:
+        #374151;
+
+}
+
+
+.feedback {
+
+    min-height:
+        50px;
+
+    margin-top:
+        14px;
+
+    padding:
+        10px 14px;
+
+    border-radius:
+        12px;
+
+    text-align:
+        center;
+
+    font-size:
+        15px;
+
+    font-weight:
+        650;
+
+    line-height:
+        1.5;
+
+}
+
+
+.feedback.good {
+
+    background:
+        #edf8f0;
+
+    color:
+        #16803c;
+
+}
+
+
+.feedback.bad {
+
+    background:
+        #fff7ed;
+
+    color:
+        #b54708;
+
+}
+
+
+.feedback.empty {
+
+    background:
+        transparent;
+
+}
+
+
+.instruction {
+
+    margin-top:
+        14px;
+
+    padding:
+        14px 18px;
+
+    border-radius:
+        14px;
+
+    background:
+        #f8fafc;
+
+    border:
+        1px solid #e8ebf0;
+
+    color:
+        #667085;
+
+    text-align:
+        center;
+
+    font-size:
+        14px;
+
+    line-height:
+        1.55;
+
+}
+
+
+.summary {
+
+    display:
+        none;
+
+}
+
+
+.summary-card {
+
+    padding:
+        30px 28px;
+
+}
+
+
+.summary-title {
+
+    text-align:
+        center;
+
+    font-size:
+        28px;
+
+    font-weight:
+        760;
+
+    margin-bottom:
+        8px;
+
+}
+
+
+.summary-subtitle {
+
+    text-align:
+        center;
+
+    color:
+        #667085;
+
+    margin-bottom:
+        28px;
+
+}
+
+
+.summary-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:
+        12px;
+
+    margin-bottom:
+        18px;
+
+}
+
+
+.stat-box {
+
+    background:
+        #f8fafc;
+
+    border:
+        1px solid #e8ebf0;
+
+    border-radius:
+        14px;
+
+    padding:
+        18px 14px;
+
+    text-align:
+        center;
+
+}
+
+
+.stat-number {
+
+    font-size:
+        28px;
+
+    font-weight:
+        780;
+
+    color:
+        #111827;
+
+}
+
+
+.stat-label {
+
+    margin-top:
+        4px;
+
+    color:
+        #667085;
+
+    font-size:
+        13px;
+
+}
+
+
+.diagnosis {
+
+    margin-top:
+        18px;
+
+    padding:
+        18px 20px;
+
+    border-radius:
+        14px;
+
+    background:
+        #f8fafc;
+
+    border:
+        1px solid #e8ebf0;
+
+    line-height:
+        1.6;
+
+}
+
+
+@media (max-width: 650px) {
+
+    .page {
+
+        width:
+            min(
+                100% - 16px,
+                1000px
+            );
+
+        margin-top:
+            16px;
+
+    }
+
+
+    .header h1 {
+
+        font-size:
+            25px;
+
+    }
+
+
+    .task-card {
+
+        padding:
+            18px 16px 15px;
+
+    }
+
+
+    .expression {
+
+        font-size:
+            27px;
+
+    }
+
+
+    .graph-card {
+
+        padding:
+            10px;
+
+    }
+
+
+    .summary-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+<div id="exerciseArea">
+
+
+    <div class="header">
+
+        <h1>
+            Lineære funksjoner
+        </h1>
+
+        <p>
+            Plasser punktene slik at linjen passer til funksjonen.
+        </p>
+
+    </div>
+
+
+    <div class="top-row">
+
+        <div
+            class="progress-text"
+            id="progressText">
+
+            Oppgave 1 av 10
+
+        </div>
+
+
+        <div
+            class="score-text"
+            id="scoreText">
+
+            Riktig på første forsøk: 0
+
+        </div>
+
+    </div>
+
+
+    <div class="progress-bar">
+
+        <div
+            class="progress-fill"
+            id="progressFill">
+        </div>
+
+    </div>
+
+
+    <div class="card task-card">
+
+        <div class="task-label">
+            Funksjonsuttrykk
+        </div>
+
+
+        <div
+            class="expression"
+            id="expression">
+        </div>
+
+    </div>
+
+
+    <div class="card graph-card">
+
+
+        <div class="graph-wrapper">
+
+            <svg
+                id="graph"
+                viewBox="0 0 760 650">
+            </svg>
+
+        </div>
+
+
+        <div class="controls">
+
+
+            <button
+                class="check"
+                id="checkButton"
+                onclick="checkAnswer()">
+
+                Sjekk svar
+
+            </button>
+
+
+            <button
+                class="next"
+                id="nextButton"
+                onclick="nextTask()">
+
+                Neste oppgave
+
+            </button>
+
+
+            <button
+                class="reset"
+                onclick="resetPoints()">
+
+                Nullstill punktene
+
+            </button>
+
+
+        </div>
+
+
+        <div
+            id="feedback"
+            class="feedback empty">
+        </div>
+
+
+        <div class="instruction">
+
+            Det blå punktet kan bare flyttes langs y-aksen.
+            Det oransje punktet kan flyttes mellom heltallskoordinater.
+            Linjen følger punktene.
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<div
+    id="summary"
+    class="summary">
+
+
+    <div class="header">
+
+        <h1>
+            Ferdig!
+        </h1>
+
+        <p>
+            Her er resultatet fra økten.
+        </p>
+
+    </div>
+
+
+    <div class="card summary-card">
+
+
+        <div class="summary-title">
+
+            10 oppgaver gjennomført
+
+        </div>
+
+
+        <div class="summary-subtitle">
+
+            Resultatet viser hva du fikk til
+            på første forsøk.
+
+        </div>
+
+
+        <div class="summary-grid">
+
+
+            <div class="stat-box">
+
+                <div
+                    class="stat-number"
+                    id="summaryFirstTry">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Hele grafen riktig
+                </div>
+
+            </div>
+
+
+            <div class="stat-box">
+
+                <div
+                    class="stat-number"
+                    id="summaryIntercept">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Konstantledd riktig
+                </div>
+
+            </div>
+
+
+            <div class="stat-box">
+
+                <div
+                    class="stat-number"
+                    id="summarySlope">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Stigningstall riktig
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div
+            class="diagnosis"
+            id="diagnosis">
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+const tasks =
+    [{"numerator": -3, "denominator": 1, "b": -2, "kategori": "Heltall negativ"}, {"numerator": -8, "denominator": 3, "b": -13, "kategori": "Ekstra utfordrende"}, {"numerator": 3, "denominator": 2, "b": 0, "kategori": "Brøk positiv"}, {"numerator": 1, "denominator": 2, "b": 6, "kategori": "Brøk positiv"}, {"numerator": -4, "denominator": 3, "b": -13, "kategori": "Ekstra utfordrende"}, {"numerator": 4, "denominator": 1, "b": 6, "kategori": "Heltall positiv"}, {"numerator": 1, "denominator": 1, "b": 14, "kategori": "Heltall positiv"}, {"numerator": -1, "denominator": 3, "b": -11, "kategori": "Brøk negativ"}, {"numerator": -1, "denominator": 1, "b": -13, "kategori": "Heltall negativ"}, {"numerator": -1, "denominator": 3, "b": -4, "kategori": "Brøk negativ"}];
+
+
+const svg =
+    document.getElementById(
+        "graph"
+    );
+
+
+const MIN = -16;
+const MAX = 16;
+const LABEL_STEP = 2;
+
+const LEFT = 72;
+const RIGHT = 28;
+
+const TOP = 28;
+const BOTTOM = 58;
+
+const WIDTH = 760;
+const HEIGHT = 650;
+
+
+const PLOT_WIDTH =
+    WIDTH -
+    LEFT -
+    RIGHT;
+
+
+const PLOT_HEIGHT =
+    HEIGHT -
+    TOP -
+    BOTTOM;
+
+
+const SCALE_X =
+    PLOT_WIDTH /
+    (MAX - MIN);
+
+
+const SCALE_Y =
+    PLOT_HEIGHT /
+    (MAX - MIN);
+
+
+let currentTask = 0;
+
+
+let point1 = {
+
+    x: 0,
+    y: 0
+
+};
+
+
+let point2 = {
+
+    x: 2,
+    y: 2
+
+};
+
+
+let dragging =
+    null;
+
+
+let attemptsThisTask =
+    0;
+
+
+let firstTryCorrect =
+    0;
+
+
+let interceptCorrectFirstCheck =
+    0;
+
+
+let slopeCorrectFirstCheck =
+    0;
+
+
+let diagnosticRecorded =
+    false;
+
+
+let taskSolved =
+    false;
+
+
+function sx(x) {
+
+    return LEFT +
+        (x - MIN) *
+        SCALE_X;
+
+}
+
+
+function sy(y) {
+
+    return TOP +
+        (MAX - y) *
+        SCALE_Y;
+
+}
+
+
+function mx(px) {
+
+    return MIN +
+        (px - LEFT) /
+        SCALE_X;
+
+}
+
+
+function my(py) {
+
+    return MAX -
+        (py - TOP) /
+        SCALE_Y;
+
+}
+
+
+function el(
+    name,
+    attrs = {}
+) {
+
+
+    const node =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            name
+        );
+
+
+    for (
+        const [key, value]
+        of Object.entries(attrs)
+    ) {
+
+        node.setAttribute(
+            key,
+            value
+        );
+
+    }
+
+
+    return node;
+
+}
+
+
+function functionLatex(
+    numerator,
+    denominator,
+    b
+) {
+
+
+    let slopePart =
+        "";
+
+
+    if (denominator === 1) {
+
+
+        if (numerator === 1) {
+
+            slopePart =
+                "x";
+
+        }
+
+
+        else if (numerator === -1) {
+
+            slopePart =
+                "-x";
+
+        }
+
+
+        else {
+
+            slopePart =
+                numerator +
+                "x";
+
+        }
+
+    }
+
+
+    else {
+
+
+        if (numerator < 0) {
+
+            slopePart =
+
+                "-\\frac{" +
+
+                Math.abs(
+                    numerator
+                ) +
+
+                "}{" +
+
+                denominator +
+
+                "}\\,x";
+
+        }
+
+
+        else {
+
+            slopePart =
+
+                "\\frac{" +
+
+                numerator +
+
+                "}{" +
+
+                denominator +
+
+                "}\\,x";
+
+        }
+
+    }
+
+
+    let interceptPart =
+        "";
+
+
+    if (b > 0) {
+
+        interceptPart =
+            " + " +
+            b;
+
+    }
+
+
+    else if (b < 0) {
+
+        interceptPart =
+            " - " +
+            Math.abs(b);
+
+    }
+
+
+    return (
+
+        "\\[" +
+
+        "y = " +
+
+        slopePart +
+
+        interceptPart +
+
+        "\\]"
+
+    );
+
+}
+
+
+function loadTask() {
+
+
+    const task =
+        tasks[currentTask];
+
+
+    const expression =
+        document.getElementById(
+            "expression"
+        );
+
+
+    expression.innerHTML =
+        functionLatex(
+            task.numerator,
+            task.denominator,
+            task.b
+        );
+
+
+    if (
+        window.MathJax &&
+        MathJax.typesetPromise
+    ) {
+
+        MathJax.typesetPromise(
+            [expression]
+        ).catch(
+            () => {}
+        );
+
+    }
+
+
+    document.getElementById(
+        "progressText"
+    ).textContent =
+
+        `Oppgave ${currentTask + 1} av ${tasks.length}`;
+
+
+    document.getElementById(
+        "scoreText"
+    ).textContent =
+
+        `Riktig på første forsøk: ${firstTryCorrect}`;
+
+
+    document.getElementById(
+        "progressFill"
+    ).style.width =
+
+        (
+            currentTask /
+            tasks.length *
+            100
+        )
+
+        + "%";
+
+
+    point1 = {
+
+        x: 0,
+        y: 0
+
+    };
+
+
+    point2 = {
+
+        x: 2,
+        y: 2
+
+    };
+
+
+    attemptsThisTask =
+        0;
+
+
+    diagnosticRecorded =
+        false;
+
+
+    taskSolved =
+        false;
+
+
+    const feedback =
+        document.getElementById(
+            "feedback"
+        );
+
+
+    feedback.textContent =
+        "";
+
+
+    feedback.className =
+        "feedback empty";
+
+
+    document.getElementById(
+        "checkButton"
+    ).style.display =
+        "inline-block";
+
+
+    document.getElementById(
+        "nextButton"
+    ).style.display =
+        "none";
+
+
+    drawGraph();
+
+}
+
+
+function drawGraph() {
+
+
+    svg.innerHTML =
+        "";
+
+
+    svg.appendChild(
+
+        el(
+            "rect",
+            {
+
+                x: 0,
+                y: 0,
+
+                width: WIDTH,
+                height: HEIGHT,
+
+                fill:
+                    "#fbfcfe"
+
+            }
+        )
+
+    );
+
+
+    for (
+        let i = MIN;
+        i <= MAX;
+        i++
+    ) {
+
+
+        svg.appendChild(
+
+            el(
+                "line",
+                {
+
+                    x1: sx(i),
+                    y1: TOP,
+
+                    x2: sx(i),
+                    y2:
+                        TOP +
+                        PLOT_HEIGHT,
+
+                    stroke:
+                        i === 0
+                        ? "#374151"
+                        : "#e8edf3",
+
+                    "stroke-width":
+                        i === 0
+                        ? 2.2
+                        : 1
+
+                }
+            )
+
+        );
+
+
+        svg.appendChild(
+
+            el(
+                "line",
+                {
+
+                    x1: LEFT,
+                    y1: sy(i),
+
+                    x2:
+                        LEFT +
+                        PLOT_WIDTH,
+
+                    y2: sy(i),
+
+                    stroke:
+                        i === 0
+                        ? "#374151"
+                        : "#e8edf3",
+
+                    "stroke-width":
+                        i === 0
+                        ? 2.2
+                        : 1
+
+                }
+            )
+
+        );
+
+    }
+
+
+    svg.appendChild(
+
+        el(
+            "line",
+            {
+
+                x1: LEFT,
+
+                y1: sy(0),
+
+                x2:
+                    LEFT +
+                    PLOT_WIDTH -
+                    7,
+
+                y2: sy(0),
+
+                stroke:
+                    "#374151",
+
+                "stroke-width":
+                    2.2
+
+            }
+        )
+
+    );
+
+
+    svg.appendChild(
+
+        el(
+            "line",
+            {
+
+                x1: sx(0),
+
+                y1:
+                    TOP +
+                    7,
+
+                x2: sx(0),
+
+                y2:
+                    TOP +
+                    PLOT_HEIGHT,
+
+                stroke:
+                    "#374151",
+
+                "stroke-width":
+                    2.2
+
+            }
+        )
+
+    );
+
+
+    svg.appendChild(
+
+        el(
+            "path",
+            {
+
+                d:
+                `
+                M ${LEFT + PLOT_WIDTH - 7}
+                  ${sy(0)}
+
+                L ${LEFT + PLOT_WIDTH - 18}
+                  ${sy(0) - 6}
+
+                L ${LEFT + PLOT_WIDTH - 18}
+                  ${sy(0) + 6}
+
+                Z
+                `,
+
+                fill:
+                    "#374151"
+
+            }
+        )
+
+    );
+
+
+    svg.appendChild(
+
+        el(
+            "path",
+            {
+
+                d:
+                `
+                M ${sx(0)}
+                  ${TOP + 7}
+
+                L ${sx(0) - 6}
+                  ${TOP + 18}
+
+                L ${sx(0) + 6}
+                  ${TOP + 18}
+
+                Z
+                `,
+
+                fill:
+                    "#374151"
+
+            }
+        )
+
+    );
+
+
+    for (
+        let i = MIN;
+        i <= MAX;
+        i++
+    ) {
+
+
+        if (
+            i !== 0 &&
+            i % LABEL_STEP === 0
+        ) {
+
+
+            const xText =
+                el(
+                    "text",
+                    {
+
+                        x:
+                            sx(i),
+
+                        y:
+                            sy(0) +
+                            25,
+
+                        "text-anchor":
+                            "middle",
+
+                        fill:
+                            "#7b8491",
+
+                        "font-size":
+                            "13"
+
+                    }
+                );
+
+
+            xText.textContent =
+                i;
+
+
+            svg.appendChild(
+                xText
+            );
+
+
+            const yText =
+                el(
+                    "text",
+                    {
+
+                        x:
+                            sx(0) -
+                            13,
+
+                        y:
+                            sy(i) +
+                            4,
+
+                        "text-anchor":
+                            "end",
+
+                        fill:
+                            "#7b8491",
+
+                        "font-size":
+                            "13"
+
+                    }
+                );
+
+
+            yText.textContent =
+                i;
+
+
+            svg.appendChild(
+                yText
+            );
+
+        }
+
+    }
+
+
+    const zeroText =
+        el(
+            "text",
+            {
+                x: sx(0) - 11,
+                y: sy(0) + 22,
+                "text-anchor": "end",
+                fill: "#7b8491",
+                "font-size": "13"
+            }
+        );
+
+    zeroText.textContent = "0";
+    svg.appendChild(zeroText);
+
+
+    const xLabel =
+        el(
+            "text",
+            {
+
+                x:
+                    LEFT +
+                    PLOT_WIDTH -
+                    2,
+
+                y:
+                    sy(0) -
+                    12,
+
+                "text-anchor":
+                    "end",
+
+                fill:
+                    "#374151",
+
+                "font-size":
+                    "16",
+
+                "font-weight":
+                    "700"
+
+            }
+        );
+
+
+    xLabel.textContent =
+        "x";
+
+
+    svg.appendChild(
+        xLabel
+    );
+
+
+    const yLabel =
+        el(
+            "text",
+            {
+
+                x:
+                    sx(0) +
+                    13,
+
+                y:
+                    TOP +
+                    18,
+
+                fill:
+                    "#374151",
+
+                "font-size":
+                    "16",
+
+                "font-weight":
+                    "700"
+
+            }
+        );
+
+
+    yLabel.textContent =
+        "y";
+
+
+    svg.appendChild(
+        yLabel
+    );
+
+
+    if (
+        point1.x !==
+        point2.x
+    ) {
+
+
+        const m =
+
+            (
+                point2.y -
+                point1.y
+            )
+
+            /
+
+            (
+                point2.x -
+                point1.x
+            );
+
+
+        const b =
+
+            point1.y -
+
+            m *
+            point1.x;
+
+
+        const yLeft =
+
+            m *
+            MIN +
+            b;
+
+
+        const yRight =
+
+            m *
+            MAX +
+            b;
+
+
+        svg.appendChild(
+
+            el(
+                "line",
+                {
+
+                    x1:
+                        sx(MIN),
+
+                    y1:
+                        sy(yLeft),
+
+                    x2:
+                        sx(MAX),
+
+                    y2:
+                        sy(yRight),
+
+                    stroke:
+                        "#64748b",
+
+                    "stroke-width":
+                        4,
+
+                    "stroke-linecap":
+                        "round"
+
+                }
+            )
+
+        );
+
+    }
+
+
+    svg.appendChild(
+
+        el(
+            "circle",
+            {
+
+                cx:
+                    sx(point1.x),
+
+                cy:
+                    sy(point1.y),
+
+                r:
+                    13,
+
+                fill:
+                    "#3b82f6",
+
+                opacity:
+                    ".13"
+
+            }
+        )
+
+    );
+
+
+    const p1 =
+        el(
+            "circle",
+            {
+
+                cx:
+                    sx(point1.x),
+
+                cy:
+                    sy(point1.y),
+
+                r:
+                    8,
+
+                fill:
+                    "#3b82f6",
+
+                stroke:
+                    "white",
+
+                "stroke-width":
+                    3,
+
+                cursor:
+                    "ns-resize"
+
+            }
+        );
+
+
+    p1.dataset.point =
+        "1";
+
+
+    svg.appendChild(
+        p1
+    );
+
+
+    svg.appendChild(
+
+        el(
+            "circle",
+            {
+
+                cx:
+                    sx(point2.x),
+
+                cy:
+                    sy(point2.y),
+
+                r:
+                    13,
+
+                fill:
+                    "#f59e0b",
+
+                opacity:
+                    ".15"
+
+            }
+        )
+
+    );
+
+
+    const p2 =
+        el(
+            "circle",
+            {
+
+                cx:
+                    sx(point2.x),
+
+                cy:
+                    sy(point2.y),
+
+                r:
+                    8,
+
+                fill:
+                    "#f59e0b",
+
+                stroke:
+                    "white",
+
+                "stroke-width":
+                    3,
+
+                cursor:
+                    "grab"
+
+            }
+        );
+
+
+    p2.dataset.point =
+        "2";
+
+
+    svg.appendChild(
+        p2
+    );
+
+
+    if (!taskSolved) {
+
+
+        p1.addEventListener(
+            "pointerdown",
+            startDrag
+        );
+
+
+        p2.addEventListener(
+            "pointerdown",
+            startDrag
+        );
+
+    }
+
+}
+
+
+function startDrag(event) {
+
+
+    dragging =
+        Number(
+            event.currentTarget
+            .dataset
+            .point
+        );
+
+
+    event.currentTarget
+        .setPointerCapture(
+            event.pointerId
+        );
+
+
+    event.preventDefault();
+
+}
+
+
+svg.addEventListener(
+    "pointermove",
+    dragPoint
+);
+
+
+svg.addEventListener(
+    "pointerup",
+    stopDrag
+);
+
+
+svg.addEventListener(
+    "pointercancel",
+    stopDrag
+);
+
+
+function dragPoint(event) {
+
+
+    if (
+        !dragging ||
+        taskSolved
+    ) {
+
+        return;
+
+    }
+
+
+    const rect =
+        svg.getBoundingClientRect();
+
+
+    const px =
+
+        (
+            event.clientX -
+            rect.left
+        )
+
+        *
+        WIDTH
+        /
+        rect.width;
+
+
+    const py =
+
+        (
+            event.clientY -
+            rect.top
+        )
+
+        *
+        HEIGHT
+        /
+        rect.height;
+
+
+    let x =
+        Math.round(
+            mx(px)
+        );
+
+
+    let y =
+        Math.round(
+            my(py)
+        );
+
+
+    x =
+        Math.max(
+            MIN,
+            Math.min(
+                MAX,
+                x
+            )
+        );
+
+
+    y =
+        Math.max(
+            MIN,
+            Math.min(
+                MAX,
+                y
+            )
+        );
+
+
+    if (
+        dragging === 1
+    ) {
+
+
+        point1.x =
+            0;
+
+
+        point1.y =
+            y;
+
+    }
+
+
+    if (
+        dragging === 2
+    ) {
+
+
+        point2.x =
+            x;
+
+
+        point2.y =
+            y;
+
+    }
+
+
+    drawGraph();
+
+}
+
+
+function stopDrag() {
+
+    dragging =
+        null;
+
+}
+
+
+function resetPoints() {
+
+
+    if (taskSolved) {
+
+        return;
+
+    }
+
+
+    point1 = {
+
+        x: 0,
+        y: 0
+
+    };
+
+
+    point2 = {
+
+        x: 2,
+        y: 2
+
+    };
+
+
+    const feedback =
+        document.getElementById(
+            "feedback"
+        );
+
+
+    feedback.textContent =
+        "";
+
+
+    feedback.className =
+        "feedback empty";
+
+
+    drawGraph();
+
+}
+
+
+function checkAnswer() {
+
+
+    if (taskSolved) {
+
+        return;
+
+    }
+
+
+    attemptsThisTask++;
+
+
+    const task =
+        tasks[currentTask];
+
+
+    const feedback =
+        document.getElementById(
+            "feedback"
+        );
+
+
+    const interceptCorrect =
+
+        point1.y ===
+        task.b;
+
+
+    let slopeCorrect =
+        false;
+
+
+    if (
+        point2.x !==
+        point1.x
+    ) {
+
+
+        const dx =
+
+            point2.x -
+            point1.x;
+
+
+        const dy =
+
+            point2.y -
+            point1.y;
+
+
+        slopeCorrect =
+
+            dy *
+            task.denominator
+
+            ===
+
+            dx *
+            task.numerator;
+
+    }
+
+
+    if (!diagnosticRecorded) {
+
+
+        if (interceptCorrect) {
+
+            interceptCorrectFirstCheck++;
+
+        }
+
+
+        if (slopeCorrect) {
+
+            slopeCorrectFirstCheck++;
+
+        }
+
+
+        diagnosticRecorded =
+            true;
+
+    }
+
+
+    if (
+        interceptCorrect &&
+        slopeCorrect
+    ) {
+
+
+        taskSolved =
+            true;
+
+
+        if (
+            attemptsThisTask === 1
+        ) {
+
+            firstTryCorrect++;
+
+        }
+
+
+        feedback.className =
+            "feedback good";
+
+
+        feedback.textContent =
+            "Riktig! Grafen beskriver funksjonen.";
+
+
+        document.getElementById(
+            "scoreText"
+        ).textContent =
+
+            `Riktig på første forsøk: ${firstTryCorrect}`;
+
+
+        document.getElementById(
+            "checkButton"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "nextButton"
+        ).style.display =
+            "inline-block";
+
+
+        drawGraph();
+
+
+        return;
+
+    }
+
+
+    if (
+        !interceptCorrect &&
+        !slopeCorrect
+    ) {
+
+
+        feedback.className =
+            "feedback bad";
+
+
+        feedback.textContent =
+
+            "Ikke helt. Se både på konstantleddet og stigningstallet.";
+
+
+        return;
+
+    }
+
+
+    if (!interceptCorrect) {
+
+
+        feedback.className =
+            "feedback bad";
+
+
+        feedback.textContent =
+
+            "Stigningstallet ser riktig ut. Se på konstantleddet og hvor grafen skal krysse y-aksen.";
+
+
+        return;
+
+    }
+
+
+    feedback.className =
+        "feedback bad";
+
+
+    feedback.textContent =
+
+        "Startpunktet på y-aksen er riktig. Se nå på stigningstallet.";
+
+}
+
+
+function nextTask() {
+
+
+    currentTask++;
+
+
+    if (
+        currentTask >=
+        tasks.length
+    ) {
+
+
+        showSummary();
+
+
+        return;
+
+    }
+
+
+    loadTask();
+
+}
+
+
+function showSummary() {
+
+
+    document.getElementById(
+        "exerciseArea"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "summary"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "summaryFirstTry"
+    ).textContent =
+
+        `${firstTryCorrect} / ${tasks.length}`;
+
+
+    document.getElementById(
+        "summaryIntercept"
+    ).textContent =
+
+        `${interceptCorrectFirstCheck} / ${tasks.length}`;
+
+
+    document.getElementById(
+        "summarySlope"
+    ).textContent =
+
+        `${slopeCorrectFirstCheck} / ${tasks.length}`;
+
+
+    const interceptRate =
+
+        interceptCorrectFirstCheck /
+        tasks.length;
+
+
+    const slopeRate =
+
+        slopeCorrectFirstCheck /
+        tasks.length;
+
+
+    let text =
+        "";
+
+
+    if (
+        interceptRate >= 0.8 &&
+        slopeRate >= 0.8
+    ) {
+
+
+        text =
+
+            "<strong>God kontroll.</strong> " +
+
+            "Du ser ut til å ha god forståelse for både " +
+
+            "konstantleddet og stigningstallet.";
+
+    }
+
+
+    else if (
+        interceptRate <
+        slopeRate - 0.15
+    ) {
+
+
+        text =
+
+            "<strong>Se nærmere på konstantleddet.</strong> " +
+
+            "Du fikk oftere stigningstallet riktig enn startpunktet. " +
+
+            "Konstantleddet forteller hvor grafen krysser y-aksen.";
+
+    }
+
+
+    else if (
+        slopeRate <
+        interceptRate - 0.15
+    ) {
+
+
+        text =
+
+            "<strong>Se nærmere på stigningstallet.</strong> " +
+
+            "Du fant ofte riktig startpunkt på y-aksen, " +
+
+            "men stigningen var vanskeligere.";
+
+    }
+
+
+    else {
+
+
+        text =
+
+            "<strong>Fortsett å arbeide med begge delene.</strong> " +
+
+            "Se både på hvor grafen krysser y-aksen " +
+
+            "og hvordan stigningstallet bestemmer retningen.";
+
+    }
+
+
+    document.getElementById(
+        "diagnosis"
+    ).innerHTML =
+        text;
+
+}
+
+
+loadTask();
+
+
+</script>
+
+</body>
+
+</html>
