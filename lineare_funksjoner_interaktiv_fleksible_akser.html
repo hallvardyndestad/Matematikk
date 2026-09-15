@@ -1,200 +1,2792 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="no">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Lineære funksjoner – graftrening</title>
-<style>
-:root{--bg:#f3f5f8;--card:#fff;--ink:#172033;--muted:#667085;--line:#e5e9f0;--blue:#2563eb;--green:#16803c;--orange:#b54708}
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
-.page{width:min(1000px,calc(100% - 28px));margin:26px auto 48px}
-.header{text-align:center;margin:0 0 20px}.header h1{font-size:30px;letter-spacing:-.5px;margin:0;font-weight:800}.header p{color:var(--muted);margin:7px 0 0}
-.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:0 8px 28px rgba(20,30,50,.06)}
-.menu-card{padding:26px}.menu-intro{margin:0 0 20px;color:var(--muted);line-height:1.55}
-.levels{display:grid;gap:10px}
-.level{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:#fbfcfe}
-.level h3{font-size:15px;margin:0 0 3px}.level p{font-size:13px;color:var(--muted);margin:0;line-height:1.4}
-.count{display:flex;align-items:center;gap:7px}
-.count button{width:36px;height:36px;padding:0;border-radius:10px;background:#eef2f7;color:#344054;font-size:20px}
-.count input{width:58px;height:36px;text-align:center;border:1px solid #d9dee8;border-radius:9px;font:inherit;font-weight:750;color:var(--ink);background:white}
-.options{margin-top:18px;padding:16px;border:1px solid var(--line);border-radius:14px}
-.options-title{font-weight:750;font-size:14px;margin-bottom:10px}
-.radio-row{display:flex;gap:12px;flex-wrap:wrap}
-.radio{flex:1;min-width:220px;display:flex;gap:9px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:12px;cursor:pointer}
-.radio input{margin-top:3px}.radio strong{display:block;font-size:14px}.radio span{display:block;color:var(--muted);font-size:12px;margin-top:2px}
-.menu-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px;flex-wrap:wrap}
-.total{color:var(--muted);font-size:14px;font-weight:650}
-button{border:0;border-radius:11px;padding:12px 20px;font:inherit;font-weight:750;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}
-button:hover{transform:translateY(-1px)}button:focus-visible,input:focus-visible{outline:3px solid rgba(37,99,235,.22);outline-offset:2px}
-.primary{background:var(--blue);color:white;box-shadow:0 5px 14px rgba(37,99,235,.2)}.secondary{background:#eef1f5;color:#374151}.success{background:var(--green);color:white}
-.error{margin-top:12px;padding:10px 12px;border-radius:10px;background:#fff7ed;color:var(--orange);font-size:14px;display:none}
-#exerciseArea,#summary{display:none}
-.top-row{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:12px}.progress-text,.score-text{color:var(--muted);font-size:14px;font-weight:650}
-.progress-bar{height:7px;background:#e6eaf0;border-radius:999px;overflow:hidden;margin-bottom:14px}.progress-fill{height:100%;width:0;background:var(--blue);border-radius:999px;transition:width .25s}
-.task-card{padding:20px 28px 16px;margin-bottom:14px}.task-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.task-label{color:var(--muted);font-size:12px;font-weight:750;text-transform:uppercase;letter-spacing:.12em}
-.badge{font-size:12px;font-weight:700;background:#f2f4f7;color:#475467;padding:6px 9px;border-radius:999px}
-.expression{min-height:72px;display:flex;align-items:center;justify-content:center;font-size:34px;color:#111827;font-family:Georgia,"Times New Roman",serif}
-.frac{display:inline-flex;vertical-align:middle;flex-direction:column;text-align:center;line-height:1;margin:0 .08em}.frac .top{border-bottom:1.6px solid currentColor;padding:0 .12em .08em}.frac .bottom{padding:.08em .12em 0}
-.graph-card{padding:18px}.graph-wrapper{width:100%;overflow:hidden;border-radius:15px;background:#fbfcfe;border:1px solid #edf0f4}
-svg{display:block;width:100%;height:auto;touch-action:none;user-select:none}
-.controls{display:flex;justify-content:center;gap:10px;margin-top:17px;flex-wrap:wrap}.next{display:none}
-.feedback{min-height:50px;margin-top:14px;padding:10px 14px;border-radius:12px;text-align:center;font-size:15px;font-weight:650;line-height:1.5}.feedback.good{background:#edf8f0;color:var(--green)}.feedback.bad{background:#fff7ed;color:var(--orange)}.feedback.empty{background:transparent}
-.instruction{margin-top:14px;padding:14px 18px;border-radius:14px;background:#f8fafc;border:1px solid #e8ebf0;color:var(--muted);text-align:center;font-size:14px;line-height:1.55}
-.summary-card{padding:30px 28px}.summary-title{text-align:center;font-size:28px;font-weight:780;margin-bottom:8px}.summary-subtitle{text-align:center;color:var(--muted);margin-bottom:28px}
-.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.stat-box{background:#f8fafc;border:1px solid #e8ebf0;border-radius:14px;padding:18px 14px;text-align:center}.stat-number{font-size:28px;font-weight:800}.stat-label{margin-top:4px;color:var(--muted);font-size:13px}
-.diagnosis{margin-top:18px;padding:18px 20px;border-radius:14px;background:#f8fafc;border:1px solid #e8ebf0;line-height:1.6}.summary-actions{text-align:center;margin-top:18px}
-@media(max-width:650px){.page{width:min(100% - 16px,1000px);margin-top:16px}.header h1{font-size:25px}.menu-card{padding:18px 14px}.level{grid-template-columns:1fr}.count{justify-content:flex-start}.task-card{padding:18px 16px 15px}.expression{font-size:29px}.graph-card{padding:10px}.summary-grid{grid-template-columns:1fr}.top-row{align-items:flex-start;flex-direction:column;gap:4px}}
-</style>
-</head>
-<body>
-<div class="page">
-<section id="menu">
-  <div class="header"><h1>Lineære funksjoner</h1><p>Lag en økt som passer for deg.</p></div>
-  <div class="card menu-card">
-    <p class="menu-intro">Velg hvor mange oppgaver du vil ha på hvert nivå. Du kan velge 0 i nivåer du ikke vil øve på.</p>
-    <div class="levels" id="levels"></div>
-    <div class="options">
-      <div class="options-title">Rekkefølge</div>
-      <div class="radio-row">
-        <label class="radio"><input type="radio" name="order" value="ascending" checked><span><strong>Stigende vanskelighetsgrad</strong><span>Enklere typer først, deretter mer krevende.</span></span></label>
-        <label class="radio"><input type="radio" name="order" value="random"><span><strong>Tilfeldig rekkefølge</strong><span>Alle valgte oppgaver blandes.</span></span></label>
-      </div>
-    </div>
-    <div id="menuError" class="error"></div>
-    <div class="menu-footer"><div class="total" id="totalText">Totalt: 10 oppgaver</div><button class="primary" onclick="startSession()">Start økt</button></div>
-  </div>
-</section>
 
-<section id="exerciseArea">
-  <div class="header"><h1>Lineære funksjoner</h1><p>Plasser punktene slik at linjen passer til funksjonen.</p></div>
-  <div class="top-row"><div class="progress-text" id="progressText"></div><div class="score-text" id="scoreText"></div></div>
-  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-  <div class="card task-card">
-    <div class="task-head"><div class="task-label">Funksjonsuttrykk</div><div class="badge" id="taskBadge"></div></div>
-    <div class="expression" id="expression"></div>
-  </div>
-  <div class="card graph-card">
-    <div class="graph-wrapper"><svg id="graph" viewBox="0 0 760 650" aria-label="Koordinatsystem med flyttbare punkter"></svg></div>
-    <div class="controls">
-      <button class="primary" id="checkButton" onclick="checkAnswer()">Sjekk svar</button>
-      <button class="success next" id="nextButton" onclick="nextTask()">Neste oppgave</button>
-      <button class="secondary" onclick="resetPoints()">Nullstill punktene</button>
-    </div>
-    <div id="feedback" class="feedback empty"></div>
-    <div class="instruction">Det blå punktet kan bare flyttes langs y-aksen. Det oransje punktet kan flyttes mellom heltallskoordinater. Linjen følger punktene.</div>
-  </div>
-</section>
+<meta charset="UTF-8">
 
-<section id="summary">
-  <div class="header"><h1>Ferdig!</h1><p>Her er resultatet fra økten.</p></div>
-  <div class="card summary-card">
-    <div class="summary-title" id="summaryTitle"></div>
-    <div class="summary-subtitle">Resultatet viser hva du fikk til på første forsøk.</div>
-    <div class="summary-grid">
-      <div class="stat-box"><div class="stat-number" id="summaryFirstTry">0</div><div class="stat-label">Hele grafen riktig</div></div>
-      <div class="stat-box"><div class="stat-number" id="summaryIntercept">0</div><div class="stat-label">Konstantledd riktig</div></div>
-      <div class="stat-box"><div class="stat-number" id="summarySlope">0</div><div class="stat-label">Stigningstall riktig</div></div>
-    </div>
-    <div class="diagnosis" id="diagnosis"></div>
-    <div class="summary-actions"><button class="primary" onclick="backToMenu()">Tilbake til meny</button></div>
-  </div>
-</section>
-</div>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+Lineære funksjoner
+</title>
+
 
 <script>
-const BANK = [{"numerator":1,"denominator":1,"b":-14,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-13,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-12,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-11,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-10,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-9,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-8,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-7,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-6,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-5,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-4,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-3,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-2,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-1,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":0,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":1,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":2,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":3,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":4,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":5,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":6,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":7,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":8,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":9,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":10,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":11,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":12,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":13,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":14,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-14,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-13,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-12,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-11,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-10,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-9,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-8,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-7,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-6,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-5,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-4,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-3,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-2,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-1,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":0,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":1,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":2,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":3,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":4,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":5,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":6,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":7,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":8,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":9,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":10,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":11,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":12,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":13,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":14,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-14,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-13,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-12,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-11,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-10,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-9,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-8,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-7,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-6,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-5,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-4,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-3,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-2,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-1,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":0,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":1,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":2,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":3,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":4,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":5,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":6,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":7,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":8,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":9,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":10,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":11,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":12,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":13,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-14,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-13,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-12,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-11,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-10,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-9,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-8,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-7,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-6,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-5,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-4,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-3,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-2,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-1,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":0,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":1,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":2,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":3,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":4,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":5,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":6,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":7,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":8,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":9,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":10,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":11,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":12,"kategori":"Heltall positiv","difficulty":0},{"numerator":-1,"denominator":1,"b":-14,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-13,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":0,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":13,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":14,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-14,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-13,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":0,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":13,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":14,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-13,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":0,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":13,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":14,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":0,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":13,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":14,"kategori":"Heltall negativ","difficulty":1},{"numerator":1,"denominator":2,"b":-14,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-13,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-12,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-11,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-10,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-9,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-8,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-7,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-6,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-5,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-4,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-3,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-2,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-1,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":0,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":1,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":2,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":3,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":4,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":5,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":6,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":7,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":8,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":9,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":10,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":11,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":12,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":13,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":14,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-14,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-13,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-12,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-11,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-10,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-9,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-8,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-7,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-6,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-5,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-4,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-3,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-2,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-1,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":0,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":1,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":2,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":3,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":4,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":5,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":6,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":7,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":8,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":9,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":10,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":11,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":12,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":13,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":14,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-14,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-13,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-12,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-11,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-10,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-9,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-8,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-7,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-6,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-5,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-4,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-3,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-2,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-1,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":0,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":1,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":2,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":3,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":4,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":5,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":6,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":7,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":8,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":9,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":10,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":11,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":12,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":13,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":14,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-14,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-13,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-12,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-11,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-10,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-9,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-8,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-7,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-6,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-5,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-4,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-3,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-2,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-1,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":0,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":1,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":2,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":3,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":4,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":5,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":6,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":7,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":8,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":9,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":10,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":11,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":12,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":13,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-14,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-13,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-12,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-11,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-10,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-9,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-8,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-7,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-6,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-5,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-4,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-3,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-2,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-1,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":0,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":1,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":2,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":3,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":4,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":5,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":6,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":7,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":8,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":9,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":10,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":11,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":12,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":13,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-14,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-13,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-12,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-11,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-10,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-9,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-8,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-7,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-6,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-5,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-4,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-3,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-2,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-1,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":0,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":1,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":2,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":3,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":4,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":5,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":6,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":7,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":8,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":9,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":10,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":11,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":12,"kategori":"Brøk positiv","difficulty":2},{"numerator":-1,"denominator":2,"b":-14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":0,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":0,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":0,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":0,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":0,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":0,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":14,"kategori":"Brøk negativ","difficulty":3},{"numerator":3,"denominator":2,"b":14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":3,"denominator":2,"b":15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":3,"denominator":2,"b":16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-3,"denominator":2,"b":-16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-3,"denominator":2,"b":-15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-3,"denominator":2,"b":-14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":4,"denominator":3,"b":13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":4,"denominator":3,"b":14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":4,"denominator":3,"b":15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":4,"denominator":3,"b":16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-4,"denominator":3,"b":-16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-4,"denominator":3,"b":-15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-4,"denominator":3,"b":-14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-4,"denominator":3,"b":-13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":2,"b":12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":2,"b":13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":2,"b":14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":2,"b":15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":2,"b":16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":2,"b":-16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":2,"b":-15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":2,"b":-14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":2,"b":-13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":2,"b":-12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":3,"b":12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":3,"b":13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":3,"b":14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":3,"b":15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":3,"b":16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":3,"b":-16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":3,"b":-15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":3,"b":-14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":3,"b":-13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":3,"b":-12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":2,"b":10,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":2,"b":11,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":2,"b":12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":2,"b":13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":2,"b":14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":2,"b":15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":2,"b":16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":2,"b":-16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":2,"b":-15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":2,"b":-14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":2,"b":-13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":2,"b":-12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":2,"b":-11,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":2,"b":-10,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":3,"b":10,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":3,"b":11,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":3,"b":12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":3,"b":13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":3,"b":14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":3,"b":15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":3,"b":16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":3,"b":-16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":3,"b":-15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":3,"b":-14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":3,"b":-13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":3,"b":-12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":3,"b":-11,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":3,"b":-10,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":9,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":10,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":11,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-11,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-10,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-9,"kategori":"Ekstra utfordrende","difficulty":4}];
-const MIN=-16, MAX=16, LABEL_STEP=2;
-const LEVELS=[
- {key:"Heltall positiv",title:"Nivå 1 · Positivt heltall",desc:"Positivt stigningstall med heltall."},
- {key:"Heltall negativ",title:"Nivå 2 · Negativt heltall",desc:"Negativt stigningstall med heltall."},
- {key:"Brøk positiv",title:"Nivå 3 · Positiv brøk",desc:"Positivt stigningstall med brøk."},
- {key:"Brøk negativ",title:"Nivå 4 · Negativ brøk",desc:"Negativt stigningstall med brøk."},
- {key:"Ekstra utfordrende",title:"Nivå 5 · Ekstra utfordrende",desc:"Krever at du bruker stigningstallet fleksibelt."}
-];
-const bankCounts=Object.fromEntries(LEVELS.map(l=>[l.key,BANK.filter(t=>t.kategori===l.key).length]));
-const levelsEl=document.getElementById("levels");
-LEVELS.forEach((l,i)=>{
- const row=document.createElement("div"); row.className="level";
- row.innerHTML=`<div><h3>${l.title}</h3><p>${l.desc}</p></div>
- <div class="count"><button type="button" aria-label="Færre oppgaver" onclick="stepCount(${i},-1)">−</button>
- <input id="count${i}" type="number" min="0" max="${bankCounts[l.key]}" value="2" inputmode="numeric" aria-label="Antall oppgaver for ${l.title}">
- <button type="button" aria-label="Flere oppgaver" onclick="stepCount(${i},1)">+</button></div>`;
- levelsEl.appendChild(row);
- document.getElementById(`count${i}`).addEventListener("input",updateTotal);
-});
-function stepCount(i,d){const e=document.getElementById(`count${i}`);e.value=Math.max(0,Math.min(Number(e.max),Number(e.value||0)+d));updateTotal()}
-function getCounts(){return LEVELS.map((_,i)=>Math.max(0,Math.floor(Number(document.getElementById(`count${i}`).value)||0)))}
-function updateTotal(){const n=getCounts().reduce((a,b)=>a+b,0);document.getElementById("totalText").textContent=`Totalt: ${n} ${n===1?"oppgave":"oppgaver"}`}
-function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-let tasks=[],currentTask=0,point1={x:0,y:0},point2={x:2,y:2},dragging=null,attemptsThisTask=0,firstTryCorrect=0,interceptCorrectFirstCheck=0,slopeCorrectFirstCheck=0,diagnosticRecorded=false,taskSolved=false;
 
-function startSession(){
- const counts=getCounts(), err=document.getElementById("menuError");
- if(counts.reduce((a,b)=>a+b,0)===0){err.textContent="Velg minst én oppgave.";err.style.display="block";return}
- for(let i=0;i<counts.length;i++){if(counts[i]>bankCounts[LEVELS[i].key]){err.textContent=`Det finnes maksimalt ${bankCounts[LEVELS[i].key]} oppgaver på ${LEVELS[i].title.toLowerCase()}.`;err.style.display="block";return}}
- err.style.display="none"; tasks=[];
- LEVELS.forEach((l,i)=>{const pool=shuffle(BANK.filter(t=>t.kategori===l.key).slice());tasks.push(...pool.slice(0,counts[i]))});
- const mode=document.querySelector('input[name="order"]:checked').value;
- if(mode==="random") shuffle(tasks); else tasks.sort((a,b)=>a.difficulty-b.difficulty);
- currentTask=0;firstTryCorrect=0;interceptCorrectFirstCheck=0;slopeCorrectFirstCheck=0;
- document.getElementById("menu").style.display="none";document.getElementById("summary").style.display="none";document.getElementById("exerciseArea").style.display="block";loadTask();
-}
-function slopeHTML(n,d){if(d===1){if(n===1)return "x";if(n===-1)return "−x";return `${n}x`}const sign=n<0?"−":"";return `${sign}<span class="frac"><span class="top">${Math.abs(n)}</span><span class="bottom">${d}</span></span>x`}
-function expressionHTML(t){let b=t.b>0?` + ${t.b}`:t.b<0?` − ${Math.abs(t.b)}`:"";return `y = ${slopeHTML(t.numerator,t.denominator)}${b}`}
-function loadTask(){
- const t=tasks[currentTask];document.getElementById("expression").innerHTML=expressionHTML(t);document.getElementById("taskBadge").textContent=LEVELS[t.difficulty].title.split(" · ")[0];
- document.getElementById("progressText").textContent=`Oppgave ${currentTask+1} av ${tasks.length}`;document.getElementById("scoreText").textContent=`Riktig på første forsøk: ${firstTryCorrect}`;
- document.getElementById("progressFill").style.width=`${currentTask/tasks.length*100}%`;
- point1={x:0,y:0};point2={x:2,y:2};attemptsThisTask=0;diagnosticRecorded=false;taskSolved=false;
- const f=document.getElementById("feedback");f.textContent="";f.className="feedback empty";document.getElementById("checkButton").style.display="inline-block";document.getElementById("nextButton").style.display="none";drawGraph();
-}
+window.MathJax = {
 
-const svg=document.getElementById("graph"),LEFT=72,RIGHT=28,TOP=28,BOTTOM=58,WIDTH=760,HEIGHT=650,PLOT_WIDTH=WIDTH-LEFT-RIGHT,PLOT_HEIGHT=HEIGHT-TOP-BOTTOM,SCALE_X=PLOT_WIDTH/(MAX-MIN),SCALE_Y=PLOT_HEIGHT/(MAX-MIN);
-const sx=x=>LEFT+(x-MIN)*SCALE_X, sy=y=>TOP+(MAX-y)*SCALE_Y, mx=px=>MIN+(px-LEFT)/SCALE_X, my=py=>MAX-(py-TOP)/SCALE_Y;
-function el(name,attrs={}){const n=document.createElementNS("http://www.w3.org/2000/svg",name);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));return n}
-function drawGraph(){
- svg.innerHTML="";svg.appendChild(el("rect",{x:0,y:0,width:WIDTH,height:HEIGHT,fill:"#fbfcfe"}));
- for(let i=MIN;i<=MAX;i++){svg.appendChild(el("line",{x1:sx(i),y1:TOP,x2:sx(i),y2:TOP+PLOT_HEIGHT,stroke:i===0?"#374151":"#e8edf3","stroke-width":i===0?2.2:1}));svg.appendChild(el("line",{x1:LEFT,y1:sy(i),x2:LEFT+PLOT_WIDTH,y2:sy(i),stroke:i===0?"#374151":"#e8edf3","stroke-width":i===0?2.2:1}))}
- svg.appendChild(el("path",{d:`M ${LEFT+PLOT_WIDTH-7} ${sy(0)} L ${LEFT+PLOT_WIDTH-18} ${sy(0)-6} L ${LEFT+PLOT_WIDTH-18} ${sy(0)+6} Z`,fill:"#374151"}));
- svg.appendChild(el("path",{d:`M ${sx(0)} ${TOP+7} L ${sx(0)-6} ${TOP+18} L ${sx(0)+6} ${TOP+18} Z`,fill:"#374151"}));
- for(let i=MIN;i<=MAX;i++){if(i!==0&&i%LABEL_STEP===0){let tx=el("text",{x:sx(i),y:sy(0)+25,"text-anchor":"middle",fill:"#7b8491","font-size":"13"});tx.textContent=i;svg.appendChild(tx);let ty=el("text",{x:sx(0)-13,y:sy(i)+4,"text-anchor":"end",fill:"#7b8491","font-size":"13"});ty.textContent=i;svg.appendChild(ty)}}
- let z=el("text",{x:sx(0)-11,y:sy(0)+22,"text-anchor":"end",fill:"#7b8491","font-size":"13"});z.textContent="0";svg.appendChild(z);
- let xl=el("text",{x:LEFT+PLOT_WIDTH-2,y:sy(0)-12,"text-anchor":"end",fill:"#374151","font-size":"16","font-weight":"700"});xl.textContent="x";svg.appendChild(xl);
- let yl=el("text",{x:sx(0)+13,y:TOP+18,fill:"#374151","font-size":"16","font-weight":"700"});yl.textContent="y";svg.appendChild(yl);
- if(point1.x!==point2.x){const m=(point2.y-point1.y)/(point2.x-point1.x),b=point1.y-m*point1.x;svg.appendChild(el("line",{x1:sx(MIN),y1:sy(m*MIN+b),x2:sx(MAX),y2:sy(m*MAX+b),stroke:"#64748b","stroke-width":4,"stroke-linecap":"round"}))}
- svg.appendChild(el("circle",{cx:sx(point1.x),cy:sy(point1.y),r:13,fill:"#3b82f6",opacity:".13"}));const p1=el("circle",{cx:sx(point1.x),cy:sy(point1.y),r:8,fill:"#3b82f6",stroke:"white","stroke-width":3,cursor:"ns-resize"});p1.dataset.point="1";svg.appendChild(p1);
- svg.appendChild(el("circle",{cx:sx(point2.x),cy:sy(point2.y),r:13,fill:"#f59e0b",opacity:".15"}));const p2=el("circle",{cx:sx(point2.x),cy:sy(point2.y),r:8,fill:"#f59e0b",stroke:"white","stroke-width":3,cursor:"grab"});p2.dataset.point="2";svg.appendChild(p2);
- if(!taskSolved){p1.addEventListener("pointerdown",startDrag);p2.addEventListener("pointerdown",startDrag)}
-}
-function startDrag(e){dragging=Number(e.currentTarget.dataset.point);e.currentTarget.setPointerCapture(e.pointerId);e.preventDefault()}
-svg.addEventListener("pointermove",e=>{if(!dragging||taskSolved)return;const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)*WIDTH/r.width,py=(e.clientY-r.top)*HEIGHT/r.height;let x=Math.max(MIN,Math.min(MAX,Math.round(mx(px)))),y=Math.max(MIN,Math.min(MAX,Math.round(my(py))));if(dragging===1){point1.x=0;point1.y=y}else{point2.x=x;point2.y=y}drawGraph()});
-svg.addEventListener("pointerup",()=>dragging=null);svg.addEventListener("pointercancel",()=>dragging=null);
-function resetPoints(){if(taskSolved)return;point1={x:0,y:0};point2={x:2,y:2};const f=document.getElementById("feedback");f.textContent="";f.className="feedback empty";drawGraph()}
-function checkAnswer(){
- if(taskSolved)return;attemptsThisTask++;const t=tasks[currentTask],f=document.getElementById("feedback"),interceptCorrect=point1.y===t.b;let slopeCorrect=false;
- if(point2.x!==point1.x){const dx=point2.x-point1.x,dy=point2.y-point1.y;slopeCorrect=dy*t.denominator===dx*t.numerator}
- if(!diagnosticRecorded){if(interceptCorrect)interceptCorrectFirstCheck++;if(slopeCorrect)slopeCorrectFirstCheck++;diagnosticRecorded=true}
- if(interceptCorrect&&slopeCorrect){taskSolved=true;if(attemptsThisTask===1)firstTryCorrect++;f.className="feedback good";f.textContent="Riktig! Grafen beskriver funksjonen.";document.getElementById("scoreText").textContent=`Riktig på første forsøk: ${firstTryCorrect}`;document.getElementById("checkButton").style.display="none";document.getElementById("nextButton").style.display="inline-block";drawGraph();return}
- f.className="feedback bad";
- if(!interceptCorrect&&!slopeCorrect)f.textContent="Ikke helt. Se både på konstantleddet og stigningstallet.";
- else if(!interceptCorrect)f.textContent="Stigningstallet ser riktig ut. Se på konstantleddet og hvor grafen skal krysse y-aksen.";
- else f.textContent="Startpunktet på y-aksen er riktig. Se nå på stigningstallet.";
-}
-function nextTask(){currentTask++;if(currentTask>=tasks.length){showSummary();return}loadTask()}
-function showSummary(){
- document.getElementById("exerciseArea").style.display="none";document.getElementById("summary").style.display="block";document.getElementById("progressFill").style.width="100%";
- document.getElementById("summaryTitle").textContent=`${tasks.length} ${tasks.length===1?"oppgave":"oppgaver"} gjennomført`;
- document.getElementById("summaryFirstTry").textContent=`${firstTryCorrect} / ${tasks.length}`;document.getElementById("summaryIntercept").textContent=`${interceptCorrectFirstCheck} / ${tasks.length}`;document.getElementById("summarySlope").textContent=`${slopeCorrectFirstCheck} / ${tasks.length}`;
- const ir=interceptCorrectFirstCheck/tasks.length,sr=slopeCorrectFirstCheck/tasks.length;let text="";
- if(ir>=.8&&sr>=.8)text="<strong>God kontroll.</strong> Du ser ut til å ha god forståelse for både konstantleddet og stigningstallet.";
- else if(ir<sr-.15)text="<strong>Se nærmere på konstantleddet.</strong> Du fikk oftere stigningstallet riktig enn startpunktet. Konstantleddet forteller hvor grafen krysser y-aksen.";
- else if(sr<ir-.15)text="<strong>Se nærmere på stigningstallet.</strong> Du fant ofte riktig startpunkt på y-aksen, men stigningen var vanskeligere.";
- else text="<strong>Fortsett å arbeide med begge delene.</strong> Se både på hvor grafen krysser y-aksen og hvordan stigningstallet bestemmer retningen.";
- document.getElementById("diagnosis").innerHTML=text;
-}
-function backToMenu(){document.getElementById("summary").style.display="none";document.getElementById("exerciseArea").style.display="none";document.getElementById("menu").style.display="block";window.scrollTo({top:0,behavior:"smooth"});updateTotal()}
-updateTotal();
+    tex: {
+
+        inlineMath:
+            [['\\(','\\)']],
+
+        displayMath:
+            [['\\[','\\]']]
+
+    },
+
+    svg: {
+
+        fontCache:
+            'global'
+
+    }
+
+};
+
 </script>
+
+
+<script
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+
+
+<style>
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background:
+        #f3f5f8;
+
+    color:
+        #1f2937;
+
+}
+
+
+.page {
+
+    width:
+        min(
+            1000px,
+            calc(100% - 32px)
+        );
+
+    margin:
+        28px auto 50px;
+
+}
+
+
+.header {
+
+    text-align:
+        center;
+
+    margin-bottom:
+        20px;
+
+}
+
+
+.header h1 {
+
+    margin:
+        0;
+
+    font-size:
+        30px;
+
+    font-weight:
+        750;
+
+    letter-spacing:
+        -0.5px;
+
+}
+
+
+.header p {
+
+    margin:
+        7px 0 0;
+
+    color:
+        #667085;
+
+    font-size:
+        15px;
+
+}
+
+
+.top-row {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    gap:
+        14px;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+.progress-text,
+.score-text {
+
+    color:
+        #667085;
+
+    font-size:
+        14px;
+
+    font-weight:
+        650;
+
+}
+
+
+.progress-bar {
+
+    height:
+        7px;
+
+    background:
+        #e6eaf0;
+
+    border-radius:
+        999px;
+
+    overflow:
+        hidden;
+
+    margin-bottom:
+        14px;
+
+}
+
+
+.progress-fill {
+
+    height:
+        100%;
+
+    width:
+        0%;
+
+    background:
+        #2563eb;
+
+    border-radius:
+        999px;
+
+    transition:
+        width .25s ease;
+
+}
+
+
+.card {
+
+    background:
+        white;
+
+    border:
+        1px solid #e7eaf0;
+
+    border-radius:
+        20px;
+
+    box-shadow:
+        0 8px 28px
+        rgba(20, 30, 50, 0.06);
+
+}
+
+
+.task-card {
+
+    padding:
+        22px 28px 18px;
+
+    margin-bottom:
+        14px;
+
+}
+
+
+.task-label {
+
+    color:
+        #667085;
+
+    font-size:
+        12px;
+
+    font-weight:
+        750;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        0.12em;
+
+    margin-bottom:
+        4px;
+
+}
+
+
+.expression {
+
+    min-height:
+        72px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        32px;
+
+    color:
+        #111827;
+
+}
+
+
+.graph-card {
+
+    padding:
+        18px;
+
+}
+
+
+.graph-wrapper {
+
+    width:
+        100%;
+
+    overflow:
+        hidden;
+
+    border-radius:
+        15px;
+
+    background:
+        #fbfcfe;
+
+    border:
+        1px solid #edf0f4;
+
+}
+
+
+svg {
+
+    display:
+        block;
+
+    width:
+        100%;
+
+    height:
+        auto;
+
+    touch-action:
+        none;
+
+    user-select:
+        none;
+
+}
+
+
+.controls {
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    gap:
+        10px;
+
+    margin-top:
+        17px;
+
+    flex-wrap:
+        wrap;
+
+}
+
+
+button {
+
+    border:
+        0;
+
+    border-radius:
+        11px;
+
+    padding:
+        12px 20px;
+
+    font:
+        inherit;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+    transition:
+        transform .12s ease,
+        box-shadow .12s ease;
+
+}
+
+
+button:hover {
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+.check {
+
+    background:
+        #2563eb;
+
+    color:
+        white;
+
+    box-shadow:
+        0 5px 14px
+        rgba(37, 99, 235, .20);
+
+}
+
+
+.next {
+
+    background:
+        #16803c;
+
+    color:
+        white;
+
+    display:
+        none;
+
+}
+
+
+.reset {
+
+    background:
+        #eef1f5;
+
+    color:
+        #374151;
+
+}
+
+
+.feedback {
+
+    min-height:
+        50px;
+
+    margin-top:
+        14px;
+
+    padding:
+        10px 14px;
+
+    border-radius:
+        12px;
+
+    text-align:
+        center;
+
+    font-size:
+        15px;
+
+    font-weight:
+        650;
+
+    line-height:
+        1.5;
+
+}
+
+
+.feedback.good {
+
+    background:
+        #edf8f0;
+
+    color:
+        #16803c;
+
+}
+
+
+.feedback.bad {
+
+    background:
+        #fff7ed;
+
+    color:
+        #b54708;
+
+}
+
+
+.feedback.empty {
+
+    background:
+        transparent;
+
+}
+
+
+.instruction {
+
+    margin-top:
+        14px;
+
+    padding:
+        14px 18px;
+
+    border-radius:
+        14px;
+
+    background:
+        #f8fafc;
+
+    border:
+        1px solid #e8ebf0;
+
+    color:
+        #667085;
+
+    text-align:
+        center;
+
+    font-size:
+        14px;
+
+    line-height:
+        1.55;
+
+}
+
+
+.summary {
+
+    display:
+        none;
+
+}
+
+
+.summary-card {
+
+    padding:
+        30px 28px;
+
+}
+
+
+.summary-title {
+
+    text-align:
+        center;
+
+    font-size:
+        28px;
+
+    font-weight:
+        760;
+
+    margin-bottom:
+        8px;
+
+}
+
+
+.summary-subtitle {
+
+    text-align:
+        center;
+
+    color:
+        #667085;
+
+    margin-bottom:
+        28px;
+
+}
+
+
+.summary-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:
+        12px;
+
+    margin-bottom:
+        18px;
+
+}
+
+
+.stat-box {
+
+    background:
+        #f8fafc;
+
+    border:
+        1px solid #e8ebf0;
+
+    border-radius:
+        14px;
+
+    padding:
+        18px 14px;
+
+    text-align:
+        center;
+
+}
+
+
+.stat-number {
+
+    font-size:
+        28px;
+
+    font-weight:
+        780;
+
+    color:
+        #111827;
+
+}
+
+
+.stat-label {
+
+    margin-top:
+        4px;
+
+    color:
+        #667085;
+
+    font-size:
+        13px;
+
+}
+
+
+.diagnosis {
+
+    margin-top:
+        18px;
+
+    padding:
+        18px 20px;
+
+    border-radius:
+        14px;
+
+    background:
+        #f8fafc;
+
+    border:
+        1px solid #e8ebf0;
+
+    line-height:
+        1.6;
+
+}
+
+
+@media (max-width: 650px) {
+
+    .page {
+
+        width:
+            min(
+                100% - 16px,
+                1000px
+            );
+
+        margin-top:
+            16px;
+
+    }
+
+
+    .header h1 {
+
+        font-size:
+            25px;
+
+    }
+
+
+    .task-card {
+
+        padding:
+            18px 16px 15px;
+
+    }
+
+
+    .expression {
+
+        font-size:
+            27px;
+
+    }
+
+
+    .graph-card {
+
+        padding:
+            10px;
+
+    }
+
+
+    .summary-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+
+.menu { display: block; }
+.menu-card { padding: 26px 28px; }
+.menu-intro { color: #667085; text-align: center; margin: 0 0 20px; line-height: 1.55; }
+.level-list { display: grid; gap: 10px; }
+.level-row { display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: center; padding: 14px 16px; border: 1px solid #e8ebf0; border-radius: 14px; background: #f8fafc; }
+.level-title { font-size: 15px; font-weight: 750; margin-bottom: 3px; }
+.level-description { color: #667085; font-size: 13px; line-height: 1.4; }
+.level-count { width: 74px; padding: 9px 8px; border: 1px solid #d8dee8; border-radius: 10px; font: inherit; font-weight: 700; text-align: center; background: white; }
+.order-box { margin-top: 18px; padding: 15px 16px; border: 1px solid #e8ebf0; border-radius: 14px; }
+.order-title { font-size: 14px; font-weight: 750; margin-bottom: 9px; }
+.order-options { display: flex; gap: 18px; flex-wrap: wrap; color: #475467; font-size: 14px; }
+.order-options label { cursor: pointer; }
+.menu-actions { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-top: 20px; flex-wrap: wrap; }
+.total-text { color: #667085; font-size: 14px; font-weight: 650; }
+.menu-error { display:none; margin-top: 12px; padding: 10px 14px; border-radius: 12px; background:#fff7ed; color:#b54708; text-align:center; font-size:14px; font-weight:650; }
+.menu-button { background:#2563eb; color:white; box-shadow:0 5px 14px rgba(37,99,235,.20); }
+.summary-actions { text-align:center; margin-top:18px; }
+@media (max-width:650px) { .level-row { grid-template-columns:1fr; gap:9px; } .menu-card { padding:20px 16px; } }
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+
+<div id="menu" class="menu">
+
+    <div class="header">
+        <h1>Lineære funksjoner</h1>
+        <p>Velg oppgaver og start en økt.</p>
+    </div>
+
+    <div class="card menu-card">
+
+        <p class="menu-intro">
+            Velg hvor mange oppgaver du ønsker på hvert nivå.
+        </p>
+
+        <div class="level-list">
+
+            <div class="level-row">
+                <div><div class="level-title">Nivå 1 · Positivt heltall</div><div class="level-description">Positivt stigningstall med heltall.</div></div>
+                <input class="level-count" id="count0" type="number" min="0" value="2">
+            </div>
+
+            <div class="level-row">
+                <div><div class="level-title">Nivå 2 · Negativt heltall</div><div class="level-description">Negativt stigningstall med heltall.</div></div>
+                <input class="level-count" id="count1" type="number" min="0" value="2">
+            </div>
+
+            <div class="level-row">
+                <div><div class="level-title">Nivå 3 · Positiv brøk</div><div class="level-description">Positivt stigningstall med brøk.</div></div>
+                <input class="level-count" id="count2" type="number" min="0" value="2">
+            </div>
+
+            <div class="level-row">
+                <div><div class="level-title">Nivå 4 · Negativ brøk</div><div class="level-description">Negativt stigningstall med brøk.</div></div>
+                <input class="level-count" id="count3" type="number" min="0" value="2">
+            </div>
+
+            <div class="level-row">
+                <div><div class="level-title">Nivå 5 · Ekstra utfordrende</div><div class="level-description">Krever at du bruker stigningstallet fleksibelt.</div></div>
+                <input class="level-count" id="count4" type="number" min="0" value="2">
+            </div>
+
+        </div>
+
+        <div class="order-box">
+            <div class="order-title">Rekkefølge</div>
+            <div class="order-options">
+                <label><input type="radio" name="taskOrder" value="ascending" checked> Stigende vanskelighetsgrad</label>
+                <label><input type="radio" name="taskOrder" value="random"> Tilfeldig rekkefølge</label>
+            </div>
+        </div>
+
+        <div id="menuError" class="menu-error"></div>
+
+        <div class="menu-actions">
+            <div class="total-text" id="totalText">Totalt: 10 oppgaver</div>
+            <button class="menu-button" onclick="startSession()">Start økt</button>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="exerciseArea" style="display:none;">
+
+
+    <div class="header">
+
+        <h1>
+            Lineære funksjoner
+        </h1>
+
+        <p>
+            Plasser punktene slik at linjen passer til funksjonen.
+        </p>
+
+    </div>
+
+
+    <div class="top-row">
+
+        <div
+            class="progress-text"
+            id="progressText">
+
+            Oppgave 1 av 0
+
+        </div>
+
+
+        <div
+            class="score-text"
+            id="scoreText">
+
+            Riktig på første forsøk: 0
+
+        </div>
+
+    </div>
+
+
+    <div class="progress-bar">
+
+        <div
+            class="progress-fill"
+            id="progressFill">
+        </div>
+
+    </div>
+
+
+    <div class="card task-card">
+
+        <div class="task-label">
+            Funksjonsuttrykk
+        </div>
+
+
+        <div
+            class="expression"
+            id="expression">
+        </div>
+
+    </div>
+
+
+    <div class="card graph-card">
+
+
+        <div class="graph-wrapper">
+
+            <svg
+                id="graph"
+                viewBox="0 0 760 650">
+            </svg>
+
+        </div>
+
+
+        <div class="controls">
+
+
+            <button
+                class="check"
+                id="checkButton"
+                onclick="checkAnswer()">
+
+                Sjekk svar
+
+            </button>
+
+
+            <button
+                class="next"
+                id="nextButton"
+                onclick="nextTask()">
+
+                Neste oppgave
+
+            </button>
+
+
+            <button
+                class="reset"
+                onclick="resetPoints()">
+
+                Nullstill punktene
+
+            </button>
+
+
+        </div>
+
+
+        <div
+            id="feedback"
+            class="feedback empty">
+        </div>
+
+
+        <div class="instruction">
+
+            Det blå punktet kan bare flyttes langs y-aksen.
+            Det oransje punktet kan flyttes mellom heltallskoordinater.
+            Linjen følger punktene.
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<div
+    id="summary"
+    class="summary">
+
+
+    <div class="header">
+
+        <h1>
+            Ferdig!
+        </h1>
+
+        <p>
+            Her er resultatet fra økten.
+        </p>
+
+    </div>
+
+
+    <div class="card summary-card">
+
+
+        <div class="summary-title">
+
+            <span id="summaryTaskCount">0</span> oppgaver gjennomført
+
+        </div>
+
+
+        <div class="summary-subtitle">
+
+            Resultatet viser hva du fikk til
+            på første forsøk.
+
+        </div>
+
+
+        <div class="summary-grid">
+
+
+            <div class="stat-box">
+
+                <div
+                    class="stat-number"
+                    id="summaryFirstTry">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Hele grafen riktig
+                </div>
+
+            </div>
+
+
+            <div class="stat-box">
+
+                <div
+                    class="stat-number"
+                    id="summaryIntercept">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Konstantledd riktig
+                </div>
+
+            </div>
+
+
+            <div class="stat-box">
+
+                <div
+                    class="stat-number"
+                    id="summarySlope">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Stigningstall riktig
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div
+            class="diagnosis"
+            id="diagnosis">
+        </div>
+
+        <div class="summary-actions">
+            <button class="reset" onclick="backToMenu()">Tilbake til meny</button>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+const taskBank = [{"numerator":1,"denominator":1,"b":-14,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-13,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-12,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-11,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-10,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-9,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-8,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-7,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-6,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-5,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-4,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-3,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-2,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":-1,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":0,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":1,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":2,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":3,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":4,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":5,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":6,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":7,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":8,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":9,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":10,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":11,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":12,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":13,"kategori":"Heltall positiv","difficulty":0},{"numerator":1,"denominator":1,"b":14,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-14,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-13,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-12,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-11,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-10,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-9,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-8,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-7,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-6,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-5,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-4,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-3,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-2,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":-1,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":0,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":1,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":2,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":3,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":4,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":5,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":6,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":7,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":8,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":9,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":10,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":11,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":12,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":13,"kategori":"Heltall positiv","difficulty":0},{"numerator":2,"denominator":1,"b":14,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-14,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-13,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-12,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-11,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-10,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-9,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-8,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-7,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-6,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-5,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-4,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-3,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-2,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":-1,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":0,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":1,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":2,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":3,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":4,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":5,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":6,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":7,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":8,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":9,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":10,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":11,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":12,"kategori":"Heltall positiv","difficulty":0},{"numerator":3,"denominator":1,"b":13,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-14,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-13,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-12,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-11,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-10,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-9,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-8,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-7,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-6,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-5,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-4,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-3,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-2,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":-1,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":0,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":1,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":2,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":3,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":4,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":5,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":6,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":7,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":8,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":9,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":10,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":11,"kategori":"Heltall positiv","difficulty":0},{"numerator":4,"denominator":1,"b":12,"kategori":"Heltall positiv","difficulty":0},{"numerator":-1,"denominator":1,"b":-14,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-13,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":-1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":0,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":13,"kategori":"Heltall negativ","difficulty":1},{"numerator":-1,"denominator":1,"b":14,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-14,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-13,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":-1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":0,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":13,"kategori":"Heltall negativ","difficulty":1},{"numerator":-2,"denominator":1,"b":14,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-13,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":-1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":0,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":13,"kategori":"Heltall negativ","difficulty":1},{"numerator":-3,"denominator":1,"b":14,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":-1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":0,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":1,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":2,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":3,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":4,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":5,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":6,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":7,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":8,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":9,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":10,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":11,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":12,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":13,"kategori":"Heltall negativ","difficulty":1},{"numerator":-4,"denominator":1,"b":14,"kategori":"Heltall negativ","difficulty":1},{"numerator":1,"denominator":2,"b":-14,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-13,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-12,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-11,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-10,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-9,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-8,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-7,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-6,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-5,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-4,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-3,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-2,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":-1,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":0,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":1,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":2,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":3,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":4,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":5,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":6,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":7,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":8,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":9,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":10,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":11,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":12,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":13,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":2,"b":14,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-14,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-13,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-12,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-11,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-10,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-9,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-8,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-7,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-6,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-5,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-4,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-3,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-2,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":-1,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":0,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":1,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":2,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":3,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":4,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":5,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":6,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":7,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":8,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":9,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":10,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":11,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":12,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":13,"kategori":"Brøk positiv","difficulty":2},{"numerator":1,"denominator":3,"b":14,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-14,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-13,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-12,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-11,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-10,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-9,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-8,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-7,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-6,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-5,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-4,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-3,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-2,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":-1,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":0,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":1,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":2,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":3,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":4,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":5,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":6,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":7,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":8,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":9,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":10,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":11,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":12,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":13,"kategori":"Brøk positiv","difficulty":2},{"numerator":2,"denominator":3,"b":14,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-14,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-13,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-12,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-11,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-10,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-9,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-8,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-7,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-6,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-5,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-4,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-3,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-2,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":-1,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":0,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":1,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":2,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":3,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":4,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":5,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":6,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":7,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":8,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":9,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":10,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":11,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":12,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":2,"b":13,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-14,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-13,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-12,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-11,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-10,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-9,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-8,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-7,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-6,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-5,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-4,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-3,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-2,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":-1,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":0,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":1,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":2,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":3,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":4,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":5,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":6,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":7,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":8,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":9,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":10,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":11,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":12,"kategori":"Brøk positiv","difficulty":2},{"numerator":3,"denominator":4,"b":13,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-14,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-13,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-12,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-11,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-10,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-9,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-8,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-7,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-6,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-5,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-4,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-3,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-2,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":-1,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":0,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":1,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":2,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":3,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":4,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":5,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":6,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":7,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":8,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":9,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":10,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":11,"kategori":"Brøk positiv","difficulty":2},{"numerator":4,"denominator":3,"b":12,"kategori":"Brøk positiv","difficulty":2},{"numerator":-1,"denominator":2,"b":-14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":-1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":0,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":2,"b":14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":-1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":0,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-1,"denominator":3,"b":14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":-1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":0,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-2,"denominator":3,"b":14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":-1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":0,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":2,"b":14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":-1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":0,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-3,"denominator":4,"b":14,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":-1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":0,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":1,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":2,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":3,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":4,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":5,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":6,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":7,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":8,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":9,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":10,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":11,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":12,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":13,"kategori":"Brøk negativ","difficulty":3},{"numerator":-4,"denominator":3,"b":14,"kategori":"Brøk negativ","difficulty":3},{"numerator":3,"denominator":2,"b":14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":3,"denominator":2,"b":15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":3,"denominator":2,"b":16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-3,"denominator":2,"b":-16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-3,"denominator":2,"b":-15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-3,"denominator":2,"b":-14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":4,"denominator":3,"b":13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":4,"denominator":3,"b":14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":4,"denominator":3,"b":15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":4,"denominator":3,"b":16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-4,"denominator":3,"b":-16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-4,"denominator":3,"b":-15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-4,"denominator":3,"b":-14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-4,"denominator":3,"b":-13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":2,"b":12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":2,"b":13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":2,"b":14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":2,"b":15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":2,"b":16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":2,"b":-16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":2,"b":-15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":2,"b":-14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":2,"b":-13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":2,"b":-12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":3,"b":12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":3,"b":13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":3,"b":14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":3,"b":15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":5,"denominator":3,"b":16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":3,"b":-16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":3,"b":-15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":3,"b":-14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":3,"b":-13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-5,"denominator":3,"b":-12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":2,"b":10,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":2,"b":11,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":2,"b":12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":2,"b":13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":2,"b":14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":2,"b":15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":2,"b":16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":2,"b":-16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":2,"b":-15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":2,"b":-14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":2,"b":-13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":2,"b":-12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":2,"b":-11,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":2,"b":-10,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":3,"b":10,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":3,"b":11,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":3,"b":12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":3,"b":13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":3,"b":14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":3,"b":15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":7,"denominator":3,"b":16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":3,"b":-16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":3,"b":-15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":3,"b":-14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":3,"b":-13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":3,"b":-12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":3,"b":-11,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-7,"denominator":3,"b":-10,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":9,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":10,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":11,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":8,"denominator":3,"b":16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-16,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-15,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-14,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-13,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-12,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-11,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-10,"kategori":"Ekstra utfordrende","difficulty":4},{"numerator":-8,"denominator":3,"b":-9,"kategori":"Ekstra utfordrende","difficulty":4}];
+
+let tasks = [];
+
+const categoryOrder = [
+    "Heltall positiv",
+    "Heltall negativ",
+    "Brøk positiv",
+    "Brøk negativ",
+    "Ekstra utfordrende"
+];
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function selectedCounts() {
+    return categoryOrder.map(
+        (_, i) => Math.max(
+            0,
+            Math.floor(
+                Number(
+                    document.getElementById("count" + i).value
+                ) || 0
+            )
+        )
+    );
+}
+
+function updateTotal() {
+    const total =
+        selectedCounts().reduce(
+            (sum, value) => sum + value,
+            0
+        );
+
+    document.getElementById(
+        "totalText"
+    ).textContent =
+        `Totalt: ${total} ${total === 1 ? "oppgave" : "oppgaver"}`;
+}
+
+function startSession() {
+
+    const counts =
+        selectedCounts();
+
+    const total =
+        counts.reduce(
+            (sum, value) => sum + value,
+            0
+        );
+
+    const error =
+        document.getElementById(
+            "menuError"
+        );
+
+    if (total <= 0) {
+        error.textContent =
+            "Velg minst én oppgave.";
+        error.style.display =
+            "block";
+        return;
+    }
+
+    tasks = [];
+
+    for (
+        let i = 0;
+        i < categoryOrder.length;
+        i++
+    ) {
+
+        const pool =
+            shuffleArray(
+                taskBank.filter(
+                    task =>
+                        task.kategori ===
+                        categoryOrder[i]
+                ).slice()
+            );
+
+        if (counts[i] > pool.length) {
+            error.textContent =
+                `Det finnes maksimalt ${pool.length} oppgaver i denne kategorien.`;
+            error.style.display =
+                "block";
+            return;
+        }
+
+        tasks.push(
+            ...pool.slice(
+                0,
+                counts[i]
+            )
+        );
+    }
+
+    const order =
+        document.querySelector(
+            'input[name="taskOrder"]:checked'
+        ).value;
+
+    if (order === "random") {
+        shuffleArray(tasks);
+    }
+
+    currentTask = 0;
+    firstTryCorrect = 0;
+    interceptCorrectFirstCheck = 0;
+    slopeCorrectFirstCheck = 0;
+
+    error.style.display =
+        "none";
+
+    document.getElementById(
+        "menu"
+    ).style.display =
+        "none";
+
+    document.getElementById(
+        "summary"
+    ).style.display =
+        "none";
+
+    document.getElementById(
+        "exerciseArea"
+    ).style.display =
+        "block";
+
+    loadTask();
+}
+
+function backToMenu() {
+
+    document.getElementById(
+        "summary"
+    ).style.display =
+        "none";
+
+    document.getElementById(
+        "exerciseArea"
+    ).style.display =
+        "none";
+
+    document.getElementById(
+        "menu"
+    ).style.display =
+        "block";
+
+    window.scrollTo(
+        0,
+        0
+    );
+}
+
+
+const svg =
+    document.getElementById(
+        "graph"
+    );
+
+
+const MIN = -16;
+const MAX = 16;
+const LABEL_STEP = 2;
+
+const LEFT = 72;
+const RIGHT = 28;
+
+const TOP = 28;
+const BOTTOM = 58;
+
+const WIDTH = 760;
+const HEIGHT = 650;
+
+
+const PLOT_WIDTH =
+    WIDTH -
+    LEFT -
+    RIGHT;
+
+
+const PLOT_HEIGHT =
+    HEIGHT -
+    TOP -
+    BOTTOM;
+
+
+const SCALE_X =
+    PLOT_WIDTH /
+    (MAX - MIN);
+
+
+const SCALE_Y =
+    PLOT_HEIGHT /
+    (MAX - MIN);
+
+
+let currentTask = 0;
+
+
+let point1 = {
+
+    x: 0,
+    y: 0
+
+};
+
+
+let point2 = {
+
+    x: 2,
+    y: 2
+
+};
+
+
+let dragging =
+    null;
+
+
+let attemptsThisTask =
+    0;
+
+
+let firstTryCorrect =
+    0;
+
+
+let interceptCorrectFirstCheck =
+    0;
+
+
+let slopeCorrectFirstCheck =
+    0;
+
+
+let diagnosticRecorded =
+    false;
+
+
+let taskSolved =
+    false;
+
+
+function sx(x) {
+
+    return LEFT +
+        (x - MIN) *
+        SCALE_X;
+
+}
+
+
+function sy(y) {
+
+    return TOP +
+        (MAX - y) *
+        SCALE_Y;
+
+}
+
+
+function mx(px) {
+
+    return MIN +
+        (px - LEFT) /
+        SCALE_X;
+
+}
+
+
+function my(py) {
+
+    return MAX -
+        (py - TOP) /
+        SCALE_Y;
+
+}
+
+
+function el(
+    name,
+    attrs = {}
+) {
+
+
+    const node =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            name
+        );
+
+
+    for (
+        const [key, value]
+        of Object.entries(attrs)
+    ) {
+
+        node.setAttribute(
+            key,
+            value
+        );
+
+    }
+
+
+    return node;
+
+}
+
+
+function functionLatex(
+    numerator,
+    denominator,
+    b
+) {
+
+
+    let slopePart =
+        "";
+
+
+    if (denominator === 1) {
+
+
+        if (numerator === 1) {
+
+            slopePart =
+                "x";
+
+        }
+
+
+        else if (numerator === -1) {
+
+            slopePart =
+                "-x";
+
+        }
+
+
+        else {
+
+            slopePart =
+                numerator +
+                "x";
+
+        }
+
+    }
+
+
+    else {
+
+
+        if (numerator < 0) {
+
+            slopePart =
+
+                "-\\frac{" +
+
+                Math.abs(
+                    numerator
+                ) +
+
+                "}{" +
+
+                denominator +
+
+                "}\\,x";
+
+        }
+
+
+        else {
+
+            slopePart =
+
+                "\\frac{" +
+
+                numerator +
+
+                "}{" +
+
+                denominator +
+
+                "}\\,x";
+
+        }
+
+    }
+
+
+    let interceptPart =
+        "";
+
+
+    if (b > 0) {
+
+        interceptPart =
+            " + " +
+            b;
+
+    }
+
+
+    else if (b < 0) {
+
+        interceptPart =
+            " - " +
+            Math.abs(b);
+
+    }
+
+
+    return (
+
+        "\\[" +
+
+        "y = " +
+
+        slopePart +
+
+        interceptPart +
+
+        "\\]"
+
+    );
+
+}
+
+
+function loadTask() {
+
+
+    const task =
+        tasks[currentTask];
+
+
+    const expression =
+        document.getElementById(
+            "expression"
+        );
+
+
+    expression.innerHTML =
+        functionLatex(
+            task.numerator,
+            task.denominator,
+            task.b
+        );
+
+
+    if (
+        window.MathJax &&
+        MathJax.typesetPromise
+    ) {
+
+        MathJax.typesetPromise(
+            [expression]
+        ).catch(
+            () => {}
+        );
+
+    }
+
+
+    document.getElementById(
+        "progressText"
+    ).textContent =
+
+        `Oppgave ${currentTask + 1} av ${tasks.length}`;
+
+
+    document.getElementById(
+        "scoreText"
+    ).textContent =
+
+        `Riktig på første forsøk: ${firstTryCorrect}`;
+
+
+    document.getElementById(
+        "progressFill"
+    ).style.width =
+
+        (
+            currentTask /
+            tasks.length *
+            100
+        )
+
+        + "%";
+
+
+    point1 = {
+
+        x: 0,
+        y: 0
+
+    };
+
+
+    point2 = {
+
+        x: 2,
+        y: 2
+
+    };
+
+
+    attemptsThisTask =
+        0;
+
+
+    diagnosticRecorded =
+        false;
+
+
+    taskSolved =
+        false;
+
+
+    const feedback =
+        document.getElementById(
+            "feedback"
+        );
+
+
+    feedback.textContent =
+        "";
+
+
+    feedback.className =
+        "feedback empty";
+
+
+    document.getElementById(
+        "checkButton"
+    ).style.display =
+        "inline-block";
+
+
+    document.getElementById(
+        "nextButton"
+    ).style.display =
+        "none";
+
+
+    drawGraph();
+
+}
+
+
+function drawGraph() {
+
+
+    svg.innerHTML =
+        "";
+
+
+    svg.appendChild(
+
+        el(
+            "rect",
+            {
+
+                x: 0,
+                y: 0,
+
+                width: WIDTH,
+                height: HEIGHT,
+
+                fill:
+                    "#fbfcfe"
+
+            }
+        )
+
+    );
+
+
+    for (
+        let i = MIN;
+        i <= MAX;
+        i++
+    ) {
+
+
+        svg.appendChild(
+
+            el(
+                "line",
+                {
+
+                    x1: sx(i),
+                    y1: TOP,
+
+                    x2: sx(i),
+                    y2:
+                        TOP +
+                        PLOT_HEIGHT,
+
+                    stroke:
+                        i === 0
+                        ? "#374151"
+                        : "#e8edf3",
+
+                    "stroke-width":
+                        i === 0
+                        ? 2.2
+                        : 1
+
+                }
+            )
+
+        );
+
+
+        svg.appendChild(
+
+            el(
+                "line",
+                {
+
+                    x1: LEFT,
+                    y1: sy(i),
+
+                    x2:
+                        LEFT +
+                        PLOT_WIDTH,
+
+                    y2: sy(i),
+
+                    stroke:
+                        i === 0
+                        ? "#374151"
+                        : "#e8edf3",
+
+                    "stroke-width":
+                        i === 0
+                        ? 2.2
+                        : 1
+
+                }
+            )
+
+        );
+
+    }
+
+
+    svg.appendChild(
+
+        el(
+            "line",
+            {
+
+                x1: LEFT,
+
+                y1: sy(0),
+
+                x2:
+                    LEFT +
+                    PLOT_WIDTH -
+                    7,
+
+                y2: sy(0),
+
+                stroke:
+                    "#374151",
+
+                "stroke-width":
+                    2.2
+
+            }
+        )
+
+    );
+
+
+    svg.appendChild(
+
+        el(
+            "line",
+            {
+
+                x1: sx(0),
+
+                y1:
+                    TOP +
+                    7,
+
+                x2: sx(0),
+
+                y2:
+                    TOP +
+                    PLOT_HEIGHT,
+
+                stroke:
+                    "#374151",
+
+                "stroke-width":
+                    2.2
+
+            }
+        )
+
+    );
+
+
+    svg.appendChild(
+
+        el(
+            "path",
+            {
+
+                d:
+                `
+                M ${LEFT + PLOT_WIDTH - 7}
+                  ${sy(0)}
+
+                L ${LEFT + PLOT_WIDTH - 18}
+                  ${sy(0) - 6}
+
+                L ${LEFT + PLOT_WIDTH - 18}
+                  ${sy(0) + 6}
+
+                Z
+                `,
+
+                fill:
+                    "#374151"
+
+            }
+        )
+
+    );
+
+
+    svg.appendChild(
+
+        el(
+            "path",
+            {
+
+                d:
+                `
+                M ${sx(0)}
+                  ${TOP + 7}
+
+                L ${sx(0) - 6}
+                  ${TOP + 18}
+
+                L ${sx(0) + 6}
+                  ${TOP + 18}
+
+                Z
+                `,
+
+                fill:
+                    "#374151"
+
+            }
+        )
+
+    );
+
+
+    for (
+        let i = MIN;
+        i <= MAX;
+        i++
+    ) {
+
+
+        if (
+            i !== 0 &&
+            i % LABEL_STEP === 0
+        ) {
+
+
+            const xText =
+                el(
+                    "text",
+                    {
+
+                        x:
+                            sx(i),
+
+                        y:
+                            sy(0) +
+                            25,
+
+                        "text-anchor":
+                            "middle",
+
+                        fill:
+                            "#7b8491",
+
+                        "font-size":
+                            "13"
+
+                    }
+                );
+
+
+            xText.textContent =
+                i;
+
+
+            svg.appendChild(
+                xText
+            );
+
+
+            const yText =
+                el(
+                    "text",
+                    {
+
+                        x:
+                            sx(0) -
+                            13,
+
+                        y:
+                            sy(i) +
+                            4,
+
+                        "text-anchor":
+                            "end",
+
+                        fill:
+                            "#7b8491",
+
+                        "font-size":
+                            "13"
+
+                    }
+                );
+
+
+            yText.textContent =
+                i;
+
+
+            svg.appendChild(
+                yText
+            );
+
+        }
+
+    }
+
+
+    const zeroText =
+        el(
+            "text",
+            {
+                x: sx(0) - 11,
+                y: sy(0) + 22,
+                "text-anchor": "end",
+                fill: "#7b8491",
+                "font-size": "13"
+            }
+        );
+
+    zeroText.textContent = "0";
+    svg.appendChild(zeroText);
+
+
+    const xLabel =
+        el(
+            "text",
+            {
+
+                x:
+                    LEFT +
+                    PLOT_WIDTH -
+                    2,
+
+                y:
+                    sy(0) -
+                    12,
+
+                "text-anchor":
+                    "end",
+
+                fill:
+                    "#374151",
+
+                "font-size":
+                    "16",
+
+                "font-weight":
+                    "700"
+
+            }
+        );
+
+
+    xLabel.textContent =
+        "x";
+
+
+    svg.appendChild(
+        xLabel
+    );
+
+
+    const yLabel =
+        el(
+            "text",
+            {
+
+                x:
+                    sx(0) +
+                    13,
+
+                y:
+                    TOP +
+                    18,
+
+                fill:
+                    "#374151",
+
+                "font-size":
+                    "16",
+
+                "font-weight":
+                    "700"
+
+            }
+        );
+
+
+    yLabel.textContent =
+        "y";
+
+
+    svg.appendChild(
+        yLabel
+    );
+
+
+    if (
+        point1.x !==
+        point2.x
+    ) {
+
+
+        const m =
+
+            (
+                point2.y -
+                point1.y
+            )
+
+            /
+
+            (
+                point2.x -
+                point1.x
+            );
+
+
+        const b =
+
+            point1.y -
+
+            m *
+            point1.x;
+
+
+        const yLeft =
+
+            m *
+            MIN +
+            b;
+
+
+        const yRight =
+
+            m *
+            MAX +
+            b;
+
+
+        svg.appendChild(
+
+            el(
+                "line",
+                {
+
+                    x1:
+                        sx(MIN),
+
+                    y1:
+                        sy(yLeft),
+
+                    x2:
+                        sx(MAX),
+
+                    y2:
+                        sy(yRight),
+
+                    stroke:
+                        "#64748b",
+
+                    "stroke-width":
+                        4,
+
+                    "stroke-linecap":
+                        "round"
+
+                }
+            )
+
+        );
+
+    }
+
+
+    svg.appendChild(
+
+        el(
+            "circle",
+            {
+
+                cx:
+                    sx(point1.x),
+
+                cy:
+                    sy(point1.y),
+
+                r:
+                    13,
+
+                fill:
+                    "#3b82f6",
+
+                opacity:
+                    ".13"
+
+            }
+        )
+
+    );
+
+
+    const p1 =
+        el(
+            "circle",
+            {
+
+                cx:
+                    sx(point1.x),
+
+                cy:
+                    sy(point1.y),
+
+                r:
+                    8,
+
+                fill:
+                    "#3b82f6",
+
+                stroke:
+                    "white",
+
+                "stroke-width":
+                    3,
+
+                cursor:
+                    "ns-resize"
+
+            }
+        );
+
+
+    p1.dataset.point =
+        "1";
+
+
+    svg.appendChild(
+        p1
+    );
+
+
+    svg.appendChild(
+
+        el(
+            "circle",
+            {
+
+                cx:
+                    sx(point2.x),
+
+                cy:
+                    sy(point2.y),
+
+                r:
+                    13,
+
+                fill:
+                    "#f59e0b",
+
+                opacity:
+                    ".15"
+
+            }
+        )
+
+    );
+
+
+    const p2 =
+        el(
+            "circle",
+            {
+
+                cx:
+                    sx(point2.x),
+
+                cy:
+                    sy(point2.y),
+
+                r:
+                    8,
+
+                fill:
+                    "#f59e0b",
+
+                stroke:
+                    "white",
+
+                "stroke-width":
+                    3,
+
+                cursor:
+                    "grab"
+
+            }
+        );
+
+
+    p2.dataset.point =
+        "2";
+
+
+    svg.appendChild(
+        p2
+    );
+
+
+    if (!taskSolved) {
+
+
+        p1.addEventListener(
+            "pointerdown",
+            startDrag
+        );
+
+
+        p2.addEventListener(
+            "pointerdown",
+            startDrag
+        );
+
+    }
+
+}
+
+
+function startDrag(event) {
+
+
+    dragging =
+        Number(
+            event.currentTarget
+            .dataset
+            .point
+        );
+
+
+    event.currentTarget
+        .setPointerCapture(
+            event.pointerId
+        );
+
+
+    event.preventDefault();
+
+}
+
+
+svg.addEventListener(
+    "pointermove",
+    dragPoint
+);
+
+
+svg.addEventListener(
+    "pointerup",
+    stopDrag
+);
+
+
+svg.addEventListener(
+    "pointercancel",
+    stopDrag
+);
+
+
+function dragPoint(event) {
+
+
+    if (
+        !dragging ||
+        taskSolved
+    ) {
+
+        return;
+
+    }
+
+
+    const rect =
+        svg.getBoundingClientRect();
+
+
+    const px =
+
+        (
+            event.clientX -
+            rect.left
+        )
+
+        *
+        WIDTH
+        /
+        rect.width;
+
+
+    const py =
+
+        (
+            event.clientY -
+            rect.top
+        )
+
+        *
+        HEIGHT
+        /
+        rect.height;
+
+
+    let x =
+        Math.round(
+            mx(px)
+        );
+
+
+    let y =
+        Math.round(
+            my(py)
+        );
+
+
+    x =
+        Math.max(
+            MIN,
+            Math.min(
+                MAX,
+                x
+            )
+        );
+
+
+    y =
+        Math.max(
+            MIN,
+            Math.min(
+                MAX,
+                y
+            )
+        );
+
+
+    if (
+        dragging === 1
+    ) {
+
+
+        point1.x =
+            0;
+
+
+        point1.y =
+            y;
+
+    }
+
+
+    if (
+        dragging === 2
+    ) {
+
+
+        point2.x =
+            x;
+
+
+        point2.y =
+            y;
+
+    }
+
+
+    drawGraph();
+
+}
+
+
+function stopDrag() {
+
+    dragging =
+        null;
+
+}
+
+
+function resetPoints() {
+
+
+    if (taskSolved) {
+
+        return;
+
+    }
+
+
+    point1 = {
+
+        x: 0,
+        y: 0
+
+    };
+
+
+    point2 = {
+
+        x: 2,
+        y: 2
+
+    };
+
+
+    const feedback =
+        document.getElementById(
+            "feedback"
+        );
+
+
+    feedback.textContent =
+        "";
+
+
+    feedback.className =
+        "feedback empty";
+
+
+    drawGraph();
+
+}
+
+
+function checkAnswer() {
+
+
+    if (taskSolved) {
+
+        return;
+
+    }
+
+
+    attemptsThisTask++;
+
+
+    const task =
+        tasks[currentTask];
+
+
+    const feedback =
+        document.getElementById(
+            "feedback"
+        );
+
+
+    const interceptCorrect =
+
+        point1.y ===
+        task.b;
+
+
+    let slopeCorrect =
+        false;
+
+
+    if (
+        point2.x !==
+        point1.x
+    ) {
+
+
+        const dx =
+
+            point2.x -
+            point1.x;
+
+
+        const dy =
+
+            point2.y -
+            point1.y;
+
+
+        slopeCorrect =
+
+            dy *
+            task.denominator
+
+            ===
+
+            dx *
+            task.numerator;
+
+    }
+
+
+    if (!diagnosticRecorded) {
+
+
+        if (interceptCorrect) {
+
+            interceptCorrectFirstCheck++;
+
+        }
+
+
+        if (slopeCorrect) {
+
+            slopeCorrectFirstCheck++;
+
+        }
+
+
+        diagnosticRecorded =
+            true;
+
+    }
+
+
+    if (
+        interceptCorrect &&
+        slopeCorrect
+    ) {
+
+
+        taskSolved =
+            true;
+
+
+        if (
+            attemptsThisTask === 1
+        ) {
+
+            firstTryCorrect++;
+
+        }
+
+
+        feedback.className =
+            "feedback good";
+
+
+        feedback.textContent =
+            "Riktig! Grafen beskriver funksjonen.";
+
+
+        document.getElementById(
+            "scoreText"
+        ).textContent =
+
+            `Riktig på første forsøk: ${firstTryCorrect}`;
+
+
+        document.getElementById(
+            "checkButton"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "nextButton"
+        ).style.display =
+            "inline-block";
+
+
+        drawGraph();
+
+
+        return;
+
+    }
+
+
+    if (
+        !interceptCorrect &&
+        !slopeCorrect
+    ) {
+
+
+        feedback.className =
+            "feedback bad";
+
+
+        feedback.textContent =
+
+            "Ikke helt. Se både på konstantleddet og stigningstallet.";
+
+
+        return;
+
+    }
+
+
+    if (!interceptCorrect) {
+
+
+        feedback.className =
+            "feedback bad";
+
+
+        feedback.textContent =
+
+            "Stigningstallet ser riktig ut. Se på konstantleddet og hvor grafen skal krysse y-aksen.";
+
+
+        return;
+
+    }
+
+
+    feedback.className =
+        "feedback bad";
+
+
+    feedback.textContent =
+
+        "Startpunktet på y-aksen er riktig. Se nå på stigningstallet.";
+
+}
+
+
+function nextTask() {
+
+
+    currentTask++;
+
+
+    if (
+        currentTask >=
+        tasks.length
+    ) {
+
+
+        showSummary();
+
+
+        return;
+
+    }
+
+
+    loadTask();
+
+}
+
+
+function showSummary() {
+
+    document.getElementById(
+        "summaryTaskCount"
+    ).textContent =
+        tasks.length;
+
+
+    document.getElementById(
+        "exerciseArea"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "summary"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "summaryFirstTry"
+    ).textContent =
+
+        `${firstTryCorrect} / ${tasks.length}`;
+
+
+    document.getElementById(
+        "summaryIntercept"
+    ).textContent =
+
+        `${interceptCorrectFirstCheck} / ${tasks.length}`;
+
+
+    document.getElementById(
+        "summarySlope"
+    ).textContent =
+
+        `${slopeCorrectFirstCheck} / ${tasks.length}`;
+
+
+    const interceptRate =
+
+        interceptCorrectFirstCheck /
+        tasks.length;
+
+
+    const slopeRate =
+
+        slopeCorrectFirstCheck /
+        tasks.length;
+
+
+    let text =
+        "";
+
+
+    if (
+        interceptRate >= 0.8 &&
+        slopeRate >= 0.8
+    ) {
+
+
+        text =
+
+            "<strong>God kontroll.</strong> " +
+
+            "Du ser ut til å ha god forståelse for både " +
+
+            "konstantleddet og stigningstallet.";
+
+    }
+
+
+    else if (
+        interceptRate <
+        slopeRate - 0.15
+    ) {
+
+
+        text =
+
+            "<strong>Se nærmere på konstantleddet.</strong> " +
+
+            "Du fikk oftere stigningstallet riktig enn startpunktet. " +
+
+            "Konstantleddet forteller hvor grafen krysser y-aksen.";
+
+    }
+
+
+    else if (
+        slopeRate <
+        interceptRate - 0.15
+    ) {
+
+
+        text =
+
+            "<strong>Se nærmere på stigningstallet.</strong> " +
+
+            "Du fant ofte riktig startpunkt på y-aksen, " +
+
+            "men stigningen var vanskeligere.";
+
+    }
+
+
+    else {
+
+
+        text =
+
+            "<strong>Fortsett å arbeide med begge delene.</strong> " +
+
+            "Se både på hvor grafen krysser y-aksen " +
+
+            "og hvordan stigningstallet bestemmer retningen.";
+
+    }
+
+
+    document.getElementById(
+        "diagnosis"
+    ).innerHTML =
+        text;
+
+}
+
+
+document.querySelectorAll(
+    ".level-count"
+).forEach(
+    input =>
+        input.addEventListener(
+            "input",
+            updateTotal
+        )
+);
+
+updateTotal();
+
+
+</script>
+
 </body>
+
 </html>
