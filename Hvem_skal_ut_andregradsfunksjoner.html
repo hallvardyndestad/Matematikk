@@ -44,7 +44,9 @@ window.MathJax = {
             MathJax.startup.defaultReady();
 
             MathJax.startup.promise.then(() => {
+
                 updateMenuTotal();
+
             });
 
         }
@@ -994,63 +996,84 @@ button {
 }
 
 
-/* MENY */
-#menuArea { display: block; }
+/* ======================================================
+   MENY FOR OPPGAVEUTVALG
+======================================================= */
+
+.menu-area {
+    display: block;
+}
+
 .menu-card {
     background: white;
     border-radius: 20px;
-    padding: 28px;
+    padding: 32px;
     box-shadow: 0 8px 28px rgba(20,30,50,.06);
-    max-width: 720px;
-    margin: 0 auto;
 }
-.menu-levels { display: grid; gap: 12px; margin: 22px 0; }
-.menu-level {
+
+.menu-grid {
     display: grid;
-    grid-template-columns: 1fr 90px;
-    gap: 18px;
+    gap: 12px;
+    max-width: 560px;
+    margin: 0 auto 18px;
+}
+
+.menu-row {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    gap: 20px;
     padding: 14px 16px;
     border: 1px solid #e6eaf0;
     border-radius: 13px;
 }
-.menu-level label { font-weight: 750; }
-.menu-level input {
-    width: 90px;
+
+.menu-row label {
+    font-weight: 750;
+}
+
+.menu-row input {
+    width: 80px;
     padding: 9px 10px;
     border: 1px solid #d0d5dd;
     border-radius: 10px;
     font: inherit;
     text-align: center;
 }
-.menu-actions {
+
+.menu-total {
+    text-align: center;
+    color: #667085;
+    margin-top: 14px;
+}
+
+.menu-error {
+    display: none;
+    text-align: center;
+    color: #b42318;
+    font-weight: 650;
+    margin-top: 12px;
+}
+
+.menu-buttons,
+.summary-buttons {
     display: flex;
     justify-content: center;
     gap: 12px;
     flex-wrap: wrap;
     margin-top: 18px;
 }
-.menu-primary { background: #2563eb; color: white; }
-.menu-secondary {
+
+.menu-start {
+    background: #2563eb;
+    color: white;
+}
+
+.menu-print,
+.menu-back {
     background: white;
     color: #344054;
     border: 1px solid #d0d5dd;
-}
-.menu-total { text-align: center; color: #667085; font-size: 14px; }
-.menu-error {
-    display: none;
-    margin-top: 14px;
-    color: #b42318;
-    text-align: center;
-    font-weight: 650;
-}
-.summary-actions {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-@media (max-width: 600px) {
-    .menu-level { grid-template-columns: 1fr; }
 }
 
 </style>
@@ -1069,36 +1092,90 @@ button {
 
 
 
-<div id="menuArea">
+<div
+    id="menuArea"
+    class="menu-area">
+
     <div class="header">
-        <h1>Hvem skal ut?</h1>
-        <p>Velg oppgaver.</p>
+
+        <h1>
+            Hvem skal ut?
+        </h1>
+
+        <p>
+            Velg oppgaver.
+        </p>
+
     </div>
 
     <div class="menu-card">
-        <div class="menu-levels">
-            <div class="menu-level">
-                <label for="countEasy">Enkel</label>
-                <input id="countEasy" type="number" min="0" value="2">
+
+        <div class="menu-grid">
+
+            <div class="menu-row">
+                <label for="easyCount">
+                    Enkel
+                </label>
+                <input
+                    id="easyCount"
+                    type="number"
+                    min="0"
+                    value="2">
             </div>
-            <div class="menu-level">
-                <label for="countMedium">Middels</label>
-                <input id="countMedium" type="number" min="0" value="2">
+
+            <div class="menu-row">
+                <label for="mediumCount">
+                    Middels
+                </label>
+                <input
+                    id="mediumCount"
+                    type="number"
+                    min="0"
+                    value="2">
             </div>
-            <div class="menu-level">
-                <label for="countHard">Vanskelig</label>
-                <input id="countHard" type="number" min="0" value="2">
+
+            <div class="menu-row">
+                <label for="hardCount">
+                    Vanskelig
+                </label>
+                <input
+                    id="hardCount"
+                    type="number"
+                    min="0"
+                    value="2">
             </div>
+
         </div>
 
-        <div id="menuTotal" class="menu-total">Totalt: 6 oppgaver</div>
-        <div id="menuError" class="menu-error"></div>
-
-        <div class="menu-actions">
-            <button class="menu-primary" onclick="startSession()">Start Hvem skal ut?</button>
-            <button class="menu-secondary" onclick="printSelectedTasks()">Skriv ut / lagre som PDF</button>
+        <div
+            id="menuTotal"
+            class="menu-total">
+            Totalt: 6 oppgaver
         </div>
+
+        <div
+            id="menuError"
+            class="menu-error">
+        </div>
+
+        <div class="menu-buttons">
+
+            <button
+                class="menu-start"
+                onclick="startSelectedTasks()">
+                Start Hvem skal ut?
+            </button>
+
+            <button
+                class="menu-print"
+                onclick="printSelectedTasks()">
+                🖨 Skriv ut / lagre som PDF
+            </button>
+
+        </div>
+
     </div>
+
 </div>
 
 
@@ -1300,8 +1377,14 @@ button {
 
         </div>
 
-        <div class="summary-actions">
-            <button class="menu-secondary" onclick="backToMenu()">Tilbake til meny</button>
+        <div class="summary-buttons">
+
+            <button
+                class="menu-back"
+                onclick="backToMenu()">
+                Tilbake til meny
+            </button>
+
         </div>
 
     </div>
@@ -1329,6 +1412,8 @@ button {
 // OPPGAVER
 // ======================================================
 
+let tasks = [];
+
 const graphSettings = {
     xmin: -6,
     xmax: 6,
@@ -1338,320 +1423,1225 @@ const graphSettings = {
     yLabelStep: 2
 };
 
-let tasks = [];
+// ======================================================
+// OPPGAVEBANK
+// Brøker lagres eksakt som teller/nevner.
+// Desimaltall brukes ikke som matematisk representasjon.
+// ======================================================
 
-/*
-Vanskelighetsgrad brukes bare internt:
-Enkel: a = 1, heltallige nullpunkter.
-Middels: enten a != 1 med heltallige nullpunkter,
-         eller a = 1 med brøker som nullpunkter.
-Vanskelig: a varierer og nullpunktene er brøker.
-*/
+function gcdInt(
+    a,
+    b
+) {
 
-function gcd(a, b) {
     a = Math.abs(a);
     b = Math.abs(b);
-    while (b) [a, b] = [b, a % b];
-    return a || 1;
-}
 
-function reducedFraction(n, d) {
-    const g = gcd(n, d);
-    d /= g;
-    n /= g;
-    if (d < 0) {
-        n = -n;
-        d = -d;
+    while (b !== 0) {
+
+        const rest =
+            a % b;
+
+        a =
+            b;
+
+        b =
+            rest;
+
     }
-    return { n, d, value: n / d };
+
+    return a || 1;
+
 }
 
-function fractionKey(f) {
-    return `${f.n}/${f.d}`;
+
+function fraction(
+    numerator,
+    denominator = 1
+) {
+
+    if (denominator < 0) {
+
+        numerator =
+            -numerator;
+
+        denominator =
+            -denominator;
+
+    }
+
+    const divisor =
+        gcdInt(
+            numerator,
+            denominator
+        );
+
+    return {
+        n: numerator / divisor,
+        d: denominator / divisor
+    };
+
 }
 
-function isIntegerFraction(f) {
-    return f.d === 1;
+
+function fractionValue(
+    value
+) {
+
+    return (
+        value.n /
+        value.d
+    );
+
 }
+
+
+function fractionIsInteger(
+    value
+) {
+
+    return (
+        value.d === 1
+    );
+
+}
+
+
+function fractionKey(
+    value
+) {
+
+    return (
+        value.n +
+        "/" +
+        value.d
+    );
+
+}
+
+
+function addFractions(
+    first,
+    second
+) {
+
+    return fraction(
+        first.n * second.d +
+        second.n * first.d,
+        first.d * second.d
+    );
+
+}
+
+
+function multiplyFractions(
+    first,
+    second
+) {
+
+    return fraction(
+        first.n * second.n,
+        first.d * second.d
+    );
+
+}
+
+
+function negateFraction(
+    value
+) {
+
+    return {
+        n: -value.n,
+        d: value.d
+    };
+
+}
+
 
 function makeRootPool() {
-    const map = new Map();
 
-    for (let n = -5; n <= 5; n++) {
-        const f = reducedFraction(n, 1);
-        map.set(fractionKey(f), f);
+    const values =
+        new Map();
+
+
+    for (
+        let n = -5;
+        n <= 5;
+        n++
+    ) {
+
+        const value =
+            fraction(n, 1);
+
+        values.set(
+            fractionKey(value),
+            value
+        );
+
     }
 
-    for (const d of [2, 3, 4]) {
-        for (let n = -20; n <= 20; n++) {
-            const f = reducedFraction(n, d);
+
+    for (
+        const denominator
+        of [2, 3, 4]
+    ) {
+
+        for (
+            let numerator = -20;
+            numerator <= 20;
+            numerator++
+        ) {
+
+            const value =
+                fraction(
+                    numerator,
+                    denominator
+                );
+
+            const numeric =
+                fractionValue(value);
+
+
             if (
-                Math.abs(f.value) <= 5 &&
-                !Number.isInteger(f.value)
+                Math.abs(numeric) < 5.5 &&
+                !fractionIsInteger(value)
             ) {
-                map.set(fractionKey(f), f);
+
+                values.set(
+                    fractionKey(value),
+                    value
+                );
+
             }
+
         }
+
     }
 
-    return [...map.values()];
+
+    return [
+        ...values.values()
+    ];
+
 }
 
-const rootPool = makeRootPool();
-const integerRoots = rootPool.filter(isIntegerFraction);
-const fractionRoots = rootPool.filter(f => !isIntegerFraction(f));
 
-function graphFits(a, x1, x2) {
-    const xmin = graphSettings.xmin;
-    const xmax = graphSettings.xmax;
-    const ymin = graphSettings.ymin;
-    const ymax = graphSettings.ymax;
+const rootPool =
+    makeRootPool();
+
+
+const integerRootPool =
+    rootPool.filter(
+        fractionIsInteger
+    );
+
+
+const fractionRootPool =
+    rootPool.filter(
+        root =>
+            !fractionIsInteger(root)
+    );
+
+
+function graphFitsOriginalAxes(
+    a,
+    firstRoot,
+    secondRoot
+) {
+
+    const x1 =
+        fractionValue(firstRoot);
+
+    const x2 =
+        fractionValue(secondRoot);
+
 
     if (
-        x1 <= xmin + 0.5 || x1 >= xmax - 0.5 ||
-        x2 <= xmin + 0.5 || x2 >= xmax - 0.5
-    ) return false;
+        x1 <= graphSettings.xmin + 0.5 ||
+        x1 >= graphSettings.xmax - 0.5 ||
+        x2 <= graphSettings.xmin + 0.5 ||
+        x2 >= graphSettings.xmax - 0.5
+    ) {
 
-    const xv = (x1 + x2) / 2;
-    const yv = a * (xv - x1) * (xv - x2);
+        return false;
+
+    }
+
+
+    const vertexX =
+        (x1 + x2) / 2;
+
+
+    const vertexY =
+        a *
+        (vertexX - x1) *
+        (vertexX - x2);
+
 
     if (
-        xv <= xmin + 0.5 || xv >= xmax - 0.5 ||
-        yv <= ymin + 1 || yv >= ymax - 1
-    ) return false;
+        vertexX <= graphSettings.xmin + 0.5 ||
+        vertexX >= graphSettings.xmax - 0.5 ||
+        vertexY <= graphSettings.ymin + 1 ||
+        vertexY >= graphSettings.ymax - 1
+    ) {
+
+        return false;
+
+    }
+
 
     /*
-    Krev at den synlige parabolen får to tydelige grener innenfor
-    det faste koordinatsystemet, uten å endre akser eller layout.
+    Kontroller et tett sett av x-verdier.
+    Vi godtar bare funksjoner der den relevante parabeldelen
+    ligger godt i det opprinnelige koordinatsystemet.
     */
-    const leftY = a * (xmin - x1) * (xmin - x2);
-    const rightY = a * (xmax - x1) * (xmax - x2);
 
-    const hasLeftVisible = leftY >= ymin - 3 && leftY <= ymax + 3;
-    const hasRightVisible = rightY >= ymin - 3 && rightY <= ymax + 3;
+    let visiblePoints =
+        0;
 
-    return hasLeftVisible || hasRightVisible;
-}
 
-function coefficientsFromRoots(a, x1, x2) {
-    return {
-        a,
-        b: -a * (x1 + x2),
-        c: a * x1 * x2
-    };
-}
+    for (
+        let i = 0;
+        i <= 120;
+        i++
+    ) {
 
-function cleanNumber(n) {
-    const rounded = Math.round(n * 1e10) / 1e10;
-    return Math.abs(rounded) < 1e-10 ? 0 : rounded;
-}
+        const x =
 
-function makeCorrectTask(a, r1, r2, level) {
-    const x1 = cleanNumber(Math.min(r1.value, r2.value));
-    const x2 = cleanNumber(Math.max(r1.value, r2.value));
-    const standard = coefficientsFromRoots(a, x1, x2);
+            graphSettings.xmin +
 
-    return {
-        graph: {
-            a: cleanNumber(standard.a),
-            b: cleanNumber(standard.b),
-            c: cleanNumber(standard.c)
-        },
-        standard: {
-            a: cleanNumber(standard.a),
-            b: cleanNumber(standard.b),
-            c: cleanNumber(standard.c)
-        },
-        factored: { a, x1, x2 },
-        nivaa: level
-    };
-}
+            (
+                graphSettings.xmax -
+                graphSettings.xmin
+            )
 
-function alteredValue(value, deltas) {
-    const candidates = deltas
-        .map(d => cleanNumber(value + d))
-        .filter(v => v !== value);
-    return candidates[Math.floor(Math.random() * candidates.length)];
-}
+            *
+            i
+            /
+            120;
 
-function makeOddOneOut(base, answer) {
-    const task = JSON.parse(JSON.stringify(base));
-    task.answer = answer;
 
-    if (answer === "graph") {
-        task.graph.c = alteredValue(task.graph.c, [-2, -1, 1, 2]);
-        task.explanation =
-            "De to uttrykkene beskriver samme funksjon. Grafen passer ikke til uttrykkene.";
-    } else if (answer === "standard") {
-        task.standard.b = alteredValue(task.standard.b, [-2, -1, 1, 2]);
-        task.explanation =
-            "Grafen og den faktoriserte formen passer sammen. Standardformen er den som ikke stemmer.";
-    } else {
-        const oldX2 = task.factored.x2;
-        let newX2 = alteredValue(oldX2, [-2, -1, 1, 2]);
-        if (newX2 === task.factored.x1) newX2 = cleanNumber(newX2 + 1);
-        task.factored.x2 = newX2;
-        task.explanation =
-            "Grafen og standardformen beskriver samme funksjon. Se på fortegnene i faktorene og nullpunktene.";
-    }
+        const y =
 
-    return task;
-}
+            a *
+            (x - x1) *
+            (x - x2);
 
-function generateLevelBank(level) {
-    const result = [];
-    const seen = new Set();
 
-    let rootSets;
-    let aValues;
+        if (
+            y >= graphSettings.ymin &&
+            y <= graphSettings.ymax
+        ) {
 
-    if (level === "enkel") {
-        rootSets = [integerRoots, integerRoots];
-        aValues = [1];
-    } else if (level === "middels") {
-        rootSets = null;
-        aValues = [-2, -1, 2];
-    } else {
-        rootSets = [fractionRoots, fractionRoots];
-        aValues = [-2, -1, 2];
-    }
+            visiblePoints++;
 
-    function addCandidates(pool1, pool2, values) {
-        for (const r1 of pool1) {
-            for (const r2 of pool2) {
-                if (r1.value >= r2.value) continue;
-
-                for (const a of values) {
-                    if (!graphFits(a, r1.value, r2.value)) continue;
-
-                    const key =
-                        `${level}|${a}|${fractionKey(r1)}|${fractionKey(r2)}`;
-                    if (seen.has(key)) continue;
-                    seen.add(key);
-
-                    result.push(makeCorrectTask(a, r1, r2, level));
-                }
-            }
         }
+
     }
 
-    if (level === "enkel") {
-        addCandidates(integerRoots, integerRoots, [1]);
+
+    return (
+        visiblePoints >= 20
+    );
+
+}
+
+
+function exactCoefficients(
+    a,
+    firstRoot,
+    secondRoot
+) {
+
+    const aFraction =
+        fraction(a, 1);
+
+
+    const sum =
+        addFractions(
+            firstRoot,
+            secondRoot
+        );
+
+
+    const product =
+        multiplyFractions(
+            firstRoot,
+            secondRoot
+        );
+
+
+    return {
+
+        a:
+            aFraction,
+
+        b:
+            multiplyFractions(
+                aFraction,
+                negateFraction(sum)
+            ),
+
+        c:
+            multiplyFractions(
+                aFraction,
+                product
+            )
+
+    };
+
+}
+
+
+function exactNumberLatex(
+    value
+) {
+
+    if (
+        value.d === 1
+    ) {
+
+        return String(
+            value.n
+        );
+
     }
 
-    if (level === "middels") {
-        addCandidates(integerRoots, integerRoots, [-2, -1, 2]);
-        addCandidates(fractionRoots, fractionRoots, [1]);
+
+    if (
+        value.n < 0
+    ) {
+
+        return (
+            "-\\frac{" +
+            Math.abs(value.n) +
+            "}{" +
+            value.d +
+            "}"
+        );
+
     }
 
-    if (level === "vanskelig") {
-        addCandidates(fractionRoots, fractionRoots, [-2, -1, 2]);
+
+    return (
+        "\\frac{" +
+        value.n +
+        "}{" +
+        value.d +
+        "}"
+    );
+
+}
+
+
+function exactSignedTerm(
+    value,
+    variable
+) {
+
+    if (
+        value.n === 0
+    ) {
+
+        return "";
+
     }
+
+
+    const sign =
+        value.n > 0
+        ? " + "
+        : " - ";
+
+
+    const absolute =
+        {
+            n: Math.abs(value.n),
+            d: value.d
+        };
+
+
+    if (variable) {
+
+        const coefficient =
+
+            absolute.n === absolute.d
+            ? ""
+            : exactNumberLatex(absolute);
+
+
+        return (
+            sign +
+            coefficient +
+            variable
+        );
+
+    }
+
+
+    return (
+        sign +
+        exactNumberLatex(absolute)
+    );
+
+}
+
+
+function standardLatexExact(
+    q
+) {
+
+    let first =
+        "";
+
+
+    if (
+        q.a.n === q.a.d
+    ) {
+
+        first =
+            "x^2";
+
+    }
+
+
+    else if (
+        q.a.n === -q.a.d
+    ) {
+
+        first =
+            "-x^2";
+
+    }
+
+
+    else {
+
+        first =
+            exactNumberLatex(q.a) +
+            "x^2";
+
+    }
+
+
+    return (
+
+        "\\[" +
+
+        "y=" +
+
+        first +
+
+        exactSignedTerm(
+            q.b,
+            "x"
+        ) +
+
+        exactSignedTerm(
+            q.c,
+            ""
+        ) +
+
+        "\\]"
+
+    );
+
+}
+
+
+function factorTextExact(
+    root
+) {
+
+    if (
+        root.n > 0
+    ) {
+
+        return (
+            "(x-" +
+            exactNumberLatex(root) +
+            ")"
+        );
+
+    }
+
+
+    if (
+        root.n < 0
+    ) {
+
+        return (
+            "(x+" +
+            exactNumberLatex(
+                {
+                    n: Math.abs(root.n),
+                    d: root.d
+                }
+            ) +
+            ")"
+        );
+
+    }
+
+
+    return "x";
+
+}
+
+
+function factoredLatexExact(
+    q
+) {
+
+    let aPart =
+        "";
+
+
+    if (
+        q.a === 1
+    ) {
+
+        aPart =
+            "";
+
+    }
+
+
+    else if (
+        q.a === -1
+    ) {
+
+        aPart =
+            "-";
+
+    }
+
+
+    else {
+
+        aPart =
+            String(q.a);
+
+    }
+
+
+    return (
+
+        "\\[" +
+
+        "y=" +
+
+        aPart +
+
+        factorTextExact(
+            q.x1Exact
+        ) +
+
+        factorTextExact(
+            q.x2Exact
+        ) +
+
+        "\\]"
+
+    );
+
+}
+
+
+function makeBaseTask(
+    a,
+    firstRoot,
+    secondRoot,
+    level
+) {
+
+    const coefficients =
+        exactCoefficients(
+            a,
+            firstRoot,
+            secondRoot
+        );
+
+
+    return {
+
+        graph: {
+            a: a,
+            b: fractionValue(
+                coefficients.b
+            ),
+            c: fractionValue(
+                coefficients.c
+            )
+        },
+
+        standardExact: {
+            a: coefficients.a,
+            b: coefficients.b,
+            c: coefficients.c
+        },
+
+        factored: {
+            a: a,
+            x1: fractionValue(firstRoot),
+            x2: fractionValue(secondRoot),
+            x1Exact: firstRoot,
+            x2Exact: secondRoot
+        },
+
+        nivaa:
+            level
+
+    };
+
+}
+
+
+function buildLevelBank(
+    level
+) {
+
+    const result =
+        [];
+
+
+    function addTasks(
+        firstPool,
+        secondPool,
+        aValues
+    ) {
+
+        for (
+            const firstRoot
+            of firstPool
+        ) {
+
+            for (
+                const secondRoot
+                of secondPool
+            ) {
+
+                if (
+                    fractionValue(firstRoot) >=
+                    fractionValue(secondRoot)
+                ) {
+
+                    continue;
+
+                }
+
+
+                for (
+                    const a
+                    of aValues
+                ) {
+
+                    if (
+                        !graphFitsOriginalAxes(
+                            a,
+                            firstRoot,
+                            secondRoot
+                        )
+                    ) {
+
+                        continue;
+
+                    }
+
+
+                    result.push(
+                        makeBaseTask(
+                            a,
+                            firstRoot,
+                            secondRoot,
+                            level
+                        )
+                    );
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    if (
+        level === "enkel"
+    ) {
+
+        addTasks(
+            integerRootPool,
+            integerRootPool,
+            [1]
+        );
+
+    }
+
+
+    else if (
+        level === "middels"
+    ) {
+
+        addTasks(
+            integerRootPool,
+            integerRootPool,
+            [-2, -1, 2]
+        );
+
+
+        addTasks(
+            fractionRootPool,
+            fractionRootPool,
+            [1]
+        );
+
+    }
+
+
+    else {
+
+        addTasks(
+            fractionRootPool,
+            fractionRootPool,
+            [-2, -1, 2]
+        );
+
+    }
+
 
     return result;
+
 }
+
 
 const taskBank = {
-    enkel: generateLevelBank("enkel"),
-    middels: generateLevelBank("middels"),
-    vanskelig: generateLevelBank("vanskelig")
+
+    enkel:
+        buildLevelBank("enkel"),
+
+    middels:
+        buildLevelBank("middels"),
+
+    vanskelig:
+        buildLevelBank("vanskelig")
+
 };
 
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+
+function shuffleArray(
+    values
+) {
+
+    for (
+        let i = values.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() *
+                (i + 1)
+            );
+
+
+        [
+            values[i],
+            values[j]
+        ] = [
+            values[j],
+            values[i]
+        ];
+
     }
-    return array;
+
+
+    return values;
+
 }
 
-function requestedCounts() {
+
+function selectedCounts() {
+
     return {
-        enkel: Math.max(0, Math.floor(Number(document.getElementById("countEasy").value) || 0)),
-        middels: Math.max(0, Math.floor(Number(document.getElementById("countMedium").value) || 0)),
-        vanskelig: Math.max(0, Math.floor(Number(document.getElementById("countHard").value) || 0))
+
+        enkel:
+            Math.max(
+                0,
+                Math.floor(
+                    Number(
+                        document.getElementById(
+                            "easyCount"
+                        ).value
+                    ) || 0
+                )
+            ),
+
+        middels:
+            Math.max(
+                0,
+                Math.floor(
+                    Number(
+                        document.getElementById(
+                            "mediumCount"
+                        ).value
+                    ) || 0
+                )
+            ),
+
+        vanskelig:
+            Math.max(
+                0,
+                Math.floor(
+                    Number(
+                        document.getElementById(
+                            "hardCount"
+                        ).value
+                    ) || 0
+                )
+            )
+
     };
+
 }
+
 
 function updateMenuTotal() {
-    const c = requestedCounts();
-    const total = c.enkel + c.middels + c.vanskelig;
-    document.getElementById("menuTotal").textContent =
+
+    const counts =
+        selectedCounts();
+
+
+    const total =
+
+        counts.enkel +
+        counts.middels +
+        counts.vanskelig;
+
+
+    document.getElementById(
+        "menuTotal"
+    ).textContent =
+
         `Totalt: ${total} ${total === 1 ? "oppgave" : "oppgaver"}`;
+
 }
+
+
+function makeOddOneOut(
+    base,
+    answer
+) {
+
+    const task =
+        structuredClone(base);
+
+
+    task.answer =
+        answer;
+
+
+    if (
+        answer === "graph"
+    ) {
+
+        task.graph.c =
+            task.graph.c + 1;
+
+
+        task.explanation =
+            "De to uttrykkene beskriver samme funksjon. Grafen passer ikke til uttrykkene.";
+
+    }
+
+
+    else if (
+        answer === "standard"
+    ) {
+
+        task.standardExact.b =
+            addFractions(
+                task.standardExact.b,
+                fraction(1, 1)
+            );
+
+
+        task.explanation =
+            "Grafen og den faktoriserte formen passer sammen. Standardformen er den som ikke stemmer.";
+
+    }
+
+
+    else {
+
+        task.factored.x2Exact =
+            addFractions(
+                task.factored.x2Exact,
+                fraction(1, 1)
+            );
+
+
+        task.factored.x2 =
+            fractionValue(
+                task.factored.x2Exact
+            );
+
+
+        task.explanation =
+            "Grafen og standardformen beskriver samme funksjon. Se på fortegnene i faktorene og nullpunktene.";
+
+    }
+
+
+    return task;
+
+}
+
 
 function buildSelectedTasks() {
-    const counts = requestedCounts();
-    const error = document.getElementById("menuError");
-    const total = counts.enkel + counts.middels + counts.vanskelig;
 
-    if (total === 0) {
-        error.textContent = "Velg minst én oppgave.";
-        error.style.display = "block";
+    const counts =
+        selectedCounts();
+
+
+    const total =
+
+        counts.enkel +
+        counts.middels +
+        counts.vanskelig;
+
+
+    const error =
+        document.getElementById(
+            "menuError"
+        );
+
+
+    if (
+        total === 0
+    ) {
+
+        error.textContent =
+            "Velg minst én oppgave.";
+
+        error.style.display =
+            "block";
+
         return false;
+
     }
 
-    const selected = [];
 
-    for (const level of ["enkel", "middels", "vanskelig"]) {
-        const pool = shuffleArray(taskBank[level].slice());
-        const count = counts[level];
+    const chosen =
+        [];
 
-        if (count > pool.length) {
+
+    const levels =
+        [
+            "enkel",
+            "middels",
+            "vanskelig"
+        ];
+
+
+    let answerIndex =
+        0;
+
+
+    for (
+        const level
+        of levels
+    ) {
+
+        const pool =
+            shuffleArray(
+                taskBank[level].slice()
+            );
+
+
+        if (
+            counts[level] >
+            pool.length
+        ) {
+
             error.textContent =
-                `Det finnes maksimalt ${pool.length} ${level}e oppgaver i banken.`;
-            error.style.display = "block";
+                "Det er valgt flere oppgaver enn banken inneholder.";
+
+            error.style.display =
+                "block";
+
             return false;
+
         }
 
-        const chosen = pool.slice(0, count);
 
-        chosen.forEach((base, index) => {
-            const answers = ["graph", "standard", "factored"];
-            const answer = answers[index % answers.length];
-            selected.push(makeOddOneOut(base, answer));
-        });
+        for (
+            const base
+            of pool.slice(
+                0,
+                counts[level]
+            )
+        ) {
+
+            const answers =
+                [
+                    "graph",
+                    "standard",
+                    "factored"
+                ];
+
+
+            chosen.push(
+                makeOddOneOut(
+                    base,
+                    answers[
+                        answerIndex %
+                        answers.length
+                    ]
+                )
+            );
+
+
+            answerIndex++;
+
+        }
+
     }
 
-    tasks = shuffleArray(selected);
-    error.style.display = "none";
+
+    tasks =
+        shuffleArray(chosen);
+
+
+    error.style.display =
+        "none";
+
+
     return true;
+
 }
 
-function startSession() {
-    if (!buildSelectedTasks()) return;
 
-    currentTask = 0;
-    firstTryCorrect = 0;
-    attemptsThisTask = 0;
-    solved = false;
+function startSelectedTasks() {
 
-    document.getElementById("menuArea").style.display = "none";
-    document.getElementById("summary").style.display = "none";
-    document.getElementById("exerciseArea").style.display = "block";
+    if (
+        !buildSelectedTasks()
+    ) {
+
+        return;
+
+    }
+
+
+    currentTask =
+        0;
+
+    firstTryCorrect =
+        0;
+
+    attemptsThisTask =
+        0;
+
+    solved =
+        false;
+
+
+    document.getElementById(
+        "menuArea"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "summary"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "exerciseArea"
+    ).style.display =
+        "block";
+
 
     buildPrintArea();
+
     loadTask();
+
 }
+
 
 function printSelectedTasks() {
-    if (!buildSelectedTasks()) return;
+
+    if (
+        !buildSelectedTasks()
+    ) {
+
+        return;
+
+    }
+
+
     buildPrintArea();
 
-    if (window.MathJax && MathJax.typesetPromise) {
+
+    if (
+        window.MathJax &&
+        MathJax.typesetPromise
+    ) {
+
         MathJax.typesetPromise(
-            [document.getElementById("printArea")]
-        ).then(() => window.print()).catch(() => window.print());
-    } else {
-        window.print();
+            [
+                document.getElementById(
+                    "printArea"
+                )
+            ]
+        ).then(
+            () => window.print()
+        ).catch(
+            () => window.print()
+        );
+
     }
+
+
+    else {
+
+        window.print();
+
+    }
+
 }
 
+
 function backToMenu() {
-    document.getElementById("summary").style.display = "none";
-    document.getElementById("exerciseArea").style.display = "none";
-    document.getElementById("menuArea").style.display = "block";
-    window.scrollTo(0, 0);
+
+    document.getElementById(
+        "summary"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "exerciseArea"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "menuArea"
+    ).style.display =
+        "block";
+
+
+    window.scrollTo(
+        0,
+        0
+    );
+
 }
 
 
@@ -1984,13 +2974,23 @@ function loadTask() {
 
 
     standard.innerHTML =
-        standardLatex(
+
+        task.standardExact
+        ? standardLatexExact(
+            task.standardExact
+        )
+        : standardLatex(
             task.standard
         );
 
 
     factored.innerHTML =
-        factoredLatex(
+
+        task.factored.x1Exact
+        ? factoredLatexExact(
+            task.factored
+        )
+        : factoredLatex(
             task.factored
         );
 
@@ -3208,7 +4208,12 @@ function buildPrintArea() {
 
 
             standardMath.innerHTML =
-                standardLatex(
+
+                task.standardExact
+                ? standardLatexExact(
+                    task.standardExact
+                )
+                : standardLatex(
                     task.standard
                 );
 
@@ -3273,7 +4278,12 @@ function buildPrintArea() {
 
 
             factoredMath.innerHTML =
-                factoredLatex(
+
+                task.factored.x1Exact
+                ? factoredLatexExact(
+                    task.factored
+                )
+                : factoredLatex(
                     task.factored
                 );
 
@@ -3366,9 +4376,21 @@ function printTasks() {
 
 
 
-document.querySelectorAll("#menuArea input[type='number']").forEach(input => {
-    input.addEventListener("input", updateMenuTotal);
-});
+
+document.querySelectorAll(
+    "#menuArea input[type='number']"
+).forEach(
+
+    input =>
+
+        input.addEventListener(
+            "input",
+            updateMenuTotal
+        )
+
+);
+
+
 updateMenuTotal();
 
 </script>
