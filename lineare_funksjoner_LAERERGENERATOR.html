@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+
+<html lang="no">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+Lineære funksjoner – utskrift
+</title>
+
+
+<script>
+
+window.MathJax = {
+
+    tex: {
+
+        inlineMath:
+            [['\\(','\\)']],
+
+        displayMath:
+            [['\\[','\\]']]
+
+    },
+
+    svg: {
+
+        fontCache:
+            'global'
+
+    },
+
+    startup: {
+
+        ready: () => {
+
+            MathJax.startup.defaultReady();
+
+            MathJax.startup.promise.then(
+                () => {
+
+                    generateWorksheet();
+
+                }
+            );
+
+        }
+
+    }
+
+};
+
+</script>
+
+
+<script
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+
+
+<style>
+
+
+* {
+
+    box-sizing:
+        border-box;
+
+}
+
+
+body {
+
+    margin:
+        0;
+
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background:
+        #f3f5f8;
+
+    color:
+        #1f2937;
+
+}
+
+
+/* ======================================================
+   SKJERM
+======================================================= */
+
+.screen {
+
+    width:
+        min(
+            950px,
+            calc(100% - 30px)
+        );
+
+    margin:
+        30px auto 50px;
+
+}
+
+
+.header-card {
+
+    background:
+        white;
+
+    border:
+        1px solid #e7eaf0;
+
+    border-radius:
+        20px;
+
+    box-shadow:
+        0 8px 28px
+        rgba(20, 30, 50, 0.06);
+
+    padding:
+        28px;
+
+    text-align:
+        center;
+
+}
+
+
+.header-card h1 {
+
+    margin:
+        0;
+
+    font-size:
+        30px;
+
+}
+
+
+.header-card p {
+
+    margin:
+        10px 0 0;
+
+    color:
+        #667085;
+
+    line-height:
+        1.55;
+
+}
+
+
+.settings-info {
+
+    margin:
+        20px auto 0;
+
+    max-width:
+        680px;
+
+    padding:
+        15px 18px;
+
+    background:
+        #f8fafc;
+
+    border:
+        1px solid #e7eaf0;
+
+    border-radius:
+        13px;
+
+    color:
+        #475467;
+
+    line-height:
+        1.65;
+
+    font-size:
+        14px;
+
+}
+
+
+.actions {
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    margin-top:
+        22px;
+
+}
+
+
+button {
+
+    border:
+        0;
+
+    border-radius:
+        11px;
+
+    padding:
+        13px 21px;
+
+    background:
+        #2563eb;
+
+    color:
+        white;
+
+    font:
+        inherit;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+    box-shadow:
+        0 5px 14px
+        rgba(37, 99, 235, .20);
+
+}
+
+
+button:hover {
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+.category-box {
+
+    margin-top:
+        20px;
+
+    padding:
+        18px;
+
+    background:
+        white;
+
+    border:
+        1px solid #e7eaf0;
+
+    border-radius:
+        16px;
+
+}
+
+
+.category-title {
+
+    font-weight:
+        750;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+.category-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap:
+        8px;
+
+}
+
+
+.category-item {
+
+    padding:
+        10px 8px;
+
+    background:
+        #f8fafc;
+
+    border:
+        1px solid #e8ebf0;
+
+    border-radius:
+        10px;
+
+    text-align:
+        center;
+
+    font-size:
+        13px;
+
+    color:
+        #667085;
+
+}
+
+
+.category-item strong {
+
+    display:
+        block;
+
+    color:
+        #1f2937;
+
+    font-size:
+        17px;
+
+    margin-bottom:
+        3px;
+
+}
+
+
+.choice-list { margin-top: 22px; text-align: left; }
+.teacher-choice { display:grid; grid-template-columns:1fr 120px; gap:20px; align-items:center; padding:16px 0; border-bottom:1px solid #e7eaf0; }
+.teacher-choice strong { display:block; margin-bottom:5px; }
+.teacher-choice p { margin:0; color:#667085; line-height:1.5; font-size:14px; }
+.teacher-choice label { font-size:13px; color:#667085; text-align:center; }
+.teacher-choice input { display:block; width:82px; margin:6px auto 0; padding:10px; border:1px solid #cfd5df; border-radius:9px; font:inherit; font-size:17px; text-align:center; }
+.random-order { margin-top:18px; display:flex; justify-content:center; align-items:center; gap:9px; color:#475467; font-size:14px; }
+.random-order input { width:18px; height:18px; margin:0; }
+#totalInfo { margin-top:14px; font-weight:750; }
+#bankInfo { margin-top:6px; color:#667085; font-size:13px; }
+.actions { gap:10px; flex-wrap:wrap; }
+
+/* ======================================================
+   PRINTAREA
+======================================================= */
+
+#printArea {
+
+    position:
+        absolute;
+
+    left:
+        -10000px;
+
+    top:
+        0;
+
+    width:
+        190mm;
+
+    background:
+        white;
+
+}
+
+
+.print-page {
+
+    width:
+        190mm;
+
+    height:
+        277mm;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    grid-template-rows:
+        repeat(2, 1fr);
+
+    gap:
+        5mm;
+
+    page-break-after:
+        always;
+
+    break-after:
+        page;
+
+}
+
+
+.print-page:last-child {
+
+    page-break-after:
+        auto;
+
+    break-after:
+        auto;
+
+}
+
+
+.task {
+
+    border:
+        1px solid #c7cdd6;
+
+    border-radius:
+        4mm;
+
+    padding:
+        4mm;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    overflow:
+        hidden;
+
+    background:
+        white;
+
+}
+
+
+.task-number {
+
+    font-size:
+        9.5pt;
+
+    font-weight:
+        750;
+
+    color:
+        #475467;
+
+}
+
+
+.expression {
+
+    height:
+        20mm;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    text-align:
+        center;
+
+    font-size:
+        20pt;
+
+}
+
+
+.graph-holder {
+
+    flex:
+        1;
+
+    min-height:
+        0;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+}
+
+
+.graph {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    max-height:
+        101mm;
+
+}
+
+
+/* ======================================================
+   UTSKRIFT
+======================================================= */
+
+@page {
+
+    size:
+        A4 portrait;
+
+    margin:
+        10mm;
+
+}
+
+
+@media print {
+
+
+    body {
+
+        margin:
+            0;
+
+        background:
+            white;
+
+    }
+
+
+    .screen {
+
+        display:
+            none !important;
+
+    }
+
+
+    #printArea {
+
+        position:
+            static;
+
+        left:
+            auto;
+
+        top:
+            auto;
+
+        width:
+            100%;
+
+        display:
+            block;
+
+    }
+
+
+    .print-page {
+
+        width:
+            100%;
+
+        height:
+            277mm;
+
+    }
+
+
+    .task {
+
+        break-inside:
+            avoid;
+
+        page-break-inside:
+            avoid;
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .category-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="screen">
+
+    <div class="header-card">
+        <h1>Lineære funksjoner</h1>
+        <p>Tegn grafen til funksjonen i koordinatsystemet.</p>
+
+        <div class="choice-list">
+            <div class="teacher-choice">
+                <div>
+                    <strong>Heltall som stigningstall</strong>
+                    <p>Eleven finner konstantleddet og arbeider med et heltall som stigningstall.</p>
+                </div>
+                <label>Antall <input id="countInteger" type="number" min="0" value="4"></label>
+            </div>
+
+            <div class="teacher-choice">
+                <div>
+                    <strong>Brøk som stigningstall</strong>
+                    <p>Eleven tolker teller og nevner som endring i y- og x-retning. Det vanlige steget mot høyre får plass.</p>
+                </div>
+                <label>Antall <input id="countFraction" type="number" min="0" value="4"></label>
+            </div>
+
+            <div class="teacher-choice">
+                <div>
+                    <strong>Krever motsatt steg</strong>
+                    <p>Det vanlige steget mot høyre går utenfor koordinatsystemet. Eleven må bruke samme stigningstall i motsatt retning.</p>
+                </div>
+                <label>Antall <input id="countChallenge" type="number" min="0" value="2"></label>
+            </div>
+        </div>
+
+        <label class="random-order">
+            <input id="randomOrder" type="checkbox">
+            Tilfeldig rekkefølge på oppgavene
+        </label>
+
+        <div id="totalInfo"></div>
+        <div id="bankInfo"></div>
+
+        <div class="actions">
+            <button onclick="generateWorksheet()">↻ Lag nytt oppgavesett</button>
+            <button onclick="printWorksheet()">🖨 Skriv ut / lagre som PDF</button>
+        </div>
+
+        <div class="settings-info">
+            Koordinatsystem: <strong>-16 til 16</strong>
+            &nbsp;•&nbsp; Én rute = 1 enhet
+            &nbsp;•&nbsp; Tall vises for hver <strong>2.</strong> verdi
+        </div>
+    </div>
+
+</div>
+
+
+<div id="printArea"></div>
+
+
+<script>
+
+
+const tasks =
+    [{"numerator": 4, "denominator": 1, "b": 0, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 2, "b": -12, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": -9, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 2, "b": 3, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": 9, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": 6, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 1, "b": -7, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 1, "b": 12, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 3, "b": -4, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 4, "b": 10, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": 13, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": -8, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 1, "b": -12, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 2, "b": -2, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": 14, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 1, "b": -9, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 2, "b": -16, "kategori": "Krever motsatt steg"}, {"numerator": -7, "denominator": 3, "b": -11, "kategori": "Krever motsatt steg"}, {"numerator": 1, "denominator": 3, "b": -2, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": -9, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 1, "b": -5, "kategori": "Heltall som stigningstall"}, {"numerator": -5, "denominator": 2, "b": -14, "kategori": "Krever motsatt steg"}, {"numerator": 1, "denominator": 2, "b": 10, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 1, "b": -10, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 4, "b": 12, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 3, "b": -9, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": -10, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": -5, "kategori": "Brøk som stigningstall"}, {"numerator": -8, "denominator": 3, "b": -10, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 2, "b": 3, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": -8, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": -10, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": 6, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 1, "b": -1, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 2, "b": -2, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 1, "b": 5, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 2, "b": 5, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 4, "b": 4, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": 6, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 3, "b": -14, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": 12, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 1, "b": 3, "kategori": "Heltall som stigningstall"}, {"numerator": 4, "denominator": 1, "b": -3, "kategori": "Heltall som stigningstall"}, {"numerator": -7, "denominator": 2, "b": -16, "kategori": "Krever motsatt steg"}, {"numerator": -1, "denominator": 3, "b": 7, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 14, "kategori": "Krever motsatt steg"}, {"numerator": -1, "denominator": 2, "b": -3, "kategori": "Brøk som stigningstall"}, {"numerator": -7, "denominator": 2, "b": -11, "kategori": "Krever motsatt steg"}, {"numerator": -1, "denominator": 2, "b": -6, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 2, "b": 9, "kategori": "Brøk som stigningstall"}, {"numerator": 7, "denominator": 2, "b": 12, "kategori": "Krever motsatt steg"}, {"numerator": -3, "denominator": 4, "b": -2, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 3, "b": 2, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 3, "b": -6, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": -13, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": -7, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": -7, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": 3, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 1, "b": 8, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 2, "b": 11, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": -12, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": 9, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 4, "b": -5, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 2, "b": -9, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": -5, "kategori": "Heltall som stigningstall"}, {"numerator": 4, "denominator": 3, "b": -7, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": -1, "kategori": "Heltall som stigningstall"}, {"numerator": 8, "denominator": 3, "b": 10, "kategori": "Krever motsatt steg"}, {"numerator": 5, "denominator": 3, "b": 12, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 2, "b": -2, "kategori": "Brøk som stigningstall"}, {"numerator": 5, "denominator": 2, "b": 12, "kategori": "Krever motsatt steg"}, {"numerator": -2, "denominator": 1, "b": 11, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 1, "b": 8, "kategori": "Heltall som stigningstall"}, {"numerator": 5, "denominator": 3, "b": 14, "kategori": "Krever motsatt steg"}, {"numerator": 2, "denominator": 3, "b": 8, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 1, "b": -11, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 3, "b": -13, "kategori": "Krever motsatt steg"}, {"numerator": 7, "denominator": 3, "b": 12, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 1, "b": 7, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 3, "b": 7, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": -5, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": -12, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 1, "b": 2, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 1, "b": 7, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 1, "b": 2, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 4, "b": 2, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 2, "b": -9, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": 13, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 1, "b": -3, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 1, "b": 5, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 3, "b": -14, "kategori": "Krever motsatt steg"}, {"numerator": -1, "denominator": 1, "b": -8, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 2, "b": -7, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 16, "kategori": "Krever motsatt steg"}, {"numerator": 4, "denominator": 3, "b": 13, "kategori": "Krever motsatt steg"}, {"numerator": 1, "denominator": 2, "b": -4, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": 1, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": 14, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": -12, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 3, "b": 0, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 1, "b": -8, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 1, "b": 11, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 3, "b": 6, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": 12, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 6, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 4, "b": 11, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": 7, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 4, "b": -9, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": -10, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 1, "b": 2, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 1, "b": 9, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 5, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 3, "b": 14, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": -7, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 3, "b": -8, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 3, "b": -1, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 2, "b": -3, "kategori": "Brøk som stigningstall"}, {"numerator": -5, "denominator": 2, "b": -16, "kategori": "Krever motsatt steg"}, {"numerator": -3, "denominator": 1, "b": -8, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 1, "b": -4, "kategori": "Heltall som stigningstall"}, {"numerator": 7, "denominator": 3, "b": 16, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 1, "b": 6, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 3, "b": -13, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 2, "b": -4, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": -8, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": -2, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 0, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": -1, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 4, "b": -13, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 2, "b": 7, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 1, "b": -2, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 1, "b": 9, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 2, "b": -11, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 1, "b": 13, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 2, "b": 2, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": -4, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": -5, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": -8, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 3, "b": -2, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": -6, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": -14, "kategori": "Heltall som stigningstall"}, {"numerator": 4, "denominator": 3, "b": -13, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": 8, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": -9, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 1, "b": 3, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 1, "b": 2, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 2, "b": -5, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 2, "b": 5, "kategori": "Brøk som stigningstall"}, {"numerator": -7, "denominator": 3, "b": -15, "kategori": "Krever motsatt steg"}, {"numerator": -4, "denominator": 1, "b": 10, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 2, "b": -13, "kategori": "Brøk som stigningstall"}, {"numerator": -5, "denominator": 3, "b": -12, "kategori": "Krever motsatt steg"}, {"numerator": -1, "denominator": 1, "b": 1, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 3, "b": 5, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": 0, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 2, "b": 8, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 4, "b": 13, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": 13, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 1, "b": 13, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 1, "b": -1, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 3, "kategori": "Brøk som stigningstall"}, {"numerator": -7, "denominator": 3, "b": -14, "kategori": "Krever motsatt steg"}, {"numerator": 2, "denominator": 3, "b": -10, "kategori": "Brøk som stigningstall"}, {"numerator": 5, "denominator": 3, "b": 15, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 4, "b": 7, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": -14, "kategori": "Heltall som stigningstall"}, {"numerator": -8, "denominator": 3, "b": -11, "kategori": "Krever motsatt steg"}, {"numerator": -7, "denominator": 2, "b": -13, "kategori": "Krever motsatt steg"}, {"numerator": -1, "denominator": 3, "b": 9, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 2, "b": 13, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 1, "b": -11, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 2, "b": 11, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 1, "b": -4, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 1, "b": 10, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 4, "b": 8, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": 10, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 1, "b": 14, "kategori": "Heltall som stigningstall"}, {"numerator": -5, "denominator": 3, "b": -15, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 4, "b": -9, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": 1, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": -7, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 1, "b": -2, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 2, "b": -12, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": 12, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 1, "b": 4, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 1, "b": 3, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 1, "b": 12, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 2, "b": -14, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 2, "kategori": "Brøk som stigningstall"}, {"numerator": -8, "denominator": 3, "b": -9, "kategori": "Krever motsatt steg"}, {"numerator": 1, "denominator": 2, "b": -9, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 8, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 15, "kategori": "Krever motsatt steg"}, {"numerator": -5, "denominator": 2, "b": -13, "kategori": "Krever motsatt steg"}, {"numerator": -3, "denominator": 2, "b": -10, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": 9, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 1, "b": -10, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 4, "b": 9, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 11, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": -11, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": -8, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": 12, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": -10, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 3, "b": -3, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": 6, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 2, "b": 9, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": 1, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 1, "b": 1, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 1, "b": 8, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 1, "b": 6, "kategori": "Heltall som stigningstall"}, {"numerator": 8, "denominator": 3, "b": 9, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 2, "b": 11, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": 4, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": 8, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": 14, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 1, "b": 14, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 3, "b": -11, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": -6, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": 14, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": -5, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": 8, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 3, "b": -2, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 2, "b": -2, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 1, "b": -7, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 1, "b": 12, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 2, "b": 12, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": -11, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 3, "b": 2, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 1, "b": -10, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 1, "b": 14, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 3, "b": -9, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 4, "b": -3, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": 12, "kategori": "Heltall som stigningstall"}, {"numerator": -7, "denominator": 3, "b": -10, "kategori": "Krever motsatt steg"}, {"numerator": -4, "denominator": 1, "b": 2, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 3, "b": -16, "kategori": "Krever motsatt steg"}, {"numerator": -4, "denominator": 1, "b": -11, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 3, "b": 4, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": -6, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 1, "b": -12, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 1, "b": 4, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 3, "b": -4, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 1, "b": -7, "kategori": "Heltall som stigningstall"}, {"numerator": -7, "denominator": 2, "b": -15, "kategori": "Krever motsatt steg"}, {"numerator": -1, "denominator": 2, "b": 10, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": 0, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 1, "b": -4, "kategori": "Heltall som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 5, "kategori": "Brøk som stigningstall"}, {"numerator": 8, "denominator": 3, "b": 14, "kategori": "Krever motsatt steg"}, {"numerator": -5, "denominator": 3, "b": -13, "kategori": "Krever motsatt steg"}, {"numerator": 1, "denominator": 1, "b": 11, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 1, "b": 5, "kategori": "Heltall som stigningstall"}, {"numerator": -8, "denominator": 3, "b": -16, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 2, "b": 15, "kategori": "Krever motsatt steg"}, {"numerator": 1, "denominator": 1, "b": -4, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 2, "b": -8, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 1, "b": -5, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 4, "b": 1, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": 14, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": -7, "kategori": "Brøk som stigningstall"}, {"numerator": -7, "denominator": 2, "b": -14, "kategori": "Krever motsatt steg"}, {"numerator": 4, "denominator": 3, "b": -8, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": -2, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": -9, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 2, "b": -10, "kategori": "Brøk som stigningstall"}, {"numerator": -7, "denominator": 3, "b": -13, "kategori": "Krever motsatt steg"}, {"numerator": -4, "denominator": 3, "b": -10, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 4, "b": -6, "kategori": "Brøk som stigningstall"}, {"numerator": -7, "denominator": 2, "b": -10, "kategori": "Krever motsatt steg"}, {"numerator": 2, "denominator": 1, "b": 5, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 2, "b": -13, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 1, "b": 1, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 1, "b": -5, "kategori": "Heltall som stigningstall"}, {"numerator": 7, "denominator": 3, "b": 15, "kategori": "Krever motsatt steg"}, {"numerator": -4, "denominator": 3, "b": -1, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 4, "b": 5, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 1, "b": -1, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 3, "b": -14, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 3, "b": 13, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": -5, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 4, "b": -14, "kategori": "Brøk som stigningstall"}, {"numerator": 5, "denominator": 2, "b": 16, "kategori": "Krever motsatt steg"}, {"numerator": 1, "denominator": 1, "b": -8, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 2, "b": 6, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 3, "b": -12, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 8, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": -2, "kategori": "Heltall som stigningstall"}, {"numerator": 4, "denominator": 3, "b": -11, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": -4, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": -7, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": -3, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 3, "b": -13, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": -11, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 3, "b": 1, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 7, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 1, "b": 11, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 1, "b": -8, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 1, "b": -3, "kategori": "Heltall som stigningstall"}, {"numerator": 7, "denominator": 3, "b": 10, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 1, "b": 3, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 3, "b": 5, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": -8, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 7, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": 14, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": -13, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 4, "b": 9, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": 7, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 1, "b": -6, "kategori": "Heltall som stigningstall"}, {"numerator": 5, "denominator": 2, "b": 15, "kategori": "Krever motsatt steg"}, {"numerator": -2, "denominator": 1, "b": -9, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 1, "b": -6, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 3, "b": 0, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 1, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": 4, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": -12, "kategori": "Heltall som stigningstall"}, {"numerator": 4, "denominator": 1, "b": 7, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 2, "b": -10, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 4, "b": 0, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": -9, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 1, "b": -4, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 1, "b": 10, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 4, "b": 6, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": -5, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 2, "b": 7, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 4, "b": 3, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 2, "b": -8, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": 3, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 2, "b": 8, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 1, "b": 13, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 3, "b": 10, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": 5, "kategori": "Brøk som stigningstall"}, {"numerator": 7, "denominator": 2, "b": 10, "kategori": "Krever motsatt steg"}, {"numerator": 1, "denominator": 1, "b": 4, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 2, "b": 13, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 1, "b": -12, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 3, "b": 10, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 1, "b": 5, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 3, "b": -9, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": 11, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 4, "b": 3, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": 5, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 2, "b": 13, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 1, "b": -7, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 1, "b": -14, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 1, "b": 13, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 2, "b": 10, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 1, "b": 6, "kategori": "Heltall som stigningstall"}, {"numerator": 7, "denominator": 3, "b": 13, "kategori": "Krever motsatt steg"}, {"numerator": -1, "denominator": 2, "b": 14, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": -12, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 1, "b": 8, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 2, "b": 8, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 1, "b": -6, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 1, "b": 6, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 2, "b": 0, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": -1, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 2, "b": -14, "kategori": "Krever motsatt steg"}, {"numerator": -3, "denominator": 2, "b": 1, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": 12, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 1, "b": 7, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 1, "b": -6, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 2, "b": 0, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": -1, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 2, "b": -12, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": -6, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 2, "b": -11, "kategori": "Brøk som stigningstall"}, {"numerator": 7, "denominator": 2, "b": 15, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 4, "b": -11, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 4, "b": -10, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": 7, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 2, "b": -10, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 1, "b": -2, "kategori": "Heltall som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 4, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": 0, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 1, "b": 3, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 1, "b": 1, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 1, "b": -13, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 3, "b": -15, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 1, "b": 10, "kategori": "Heltall som stigningstall"}, {"numerator": 4, "denominator": 3, "b": -3, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 1, "b": -9, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 1, "b": -13, "kategori": "Heltall som stigningstall"}, {"numerator": 7, "denominator": 2, "b": 14, "kategori": "Krever motsatt steg"}, {"numerator": -3, "denominator": 2, "b": -6, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": 5, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 1, "b": 6, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 1, "b": 11, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 3, "b": -10, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": -5, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": -12, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 1, "b": 4, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 3, "b": 3, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 1, "b": 2, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 2, "b": -14, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 4, "b": -2, "kategori": "Brøk som stigningstall"}, {"numerator": -5, "denominator": 3, "b": -16, "kategori": "Krever motsatt steg"}, {"numerator": -1, "denominator": 3, "b": 1, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": -12, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 1, "b": 14, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 1, "b": 0, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 1, "b": -7, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 4, "b": -4, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": -14, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 2, "b": -1, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": 4, "kategori": "Heltall som stigningstall"}, {"numerator": -8, "denominator": 3, "b": -15, "kategori": "Krever motsatt steg"}, {"numerator": -4, "denominator": 3, "b": 9, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": -5, "kategori": "Heltall som stigningstall"}, {"numerator": 4, "denominator": 1, "b": -6, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 1, "b": 5, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 1, "b": -12, "kategori": "Heltall som stigningstall"}, {"numerator": 8, "denominator": 3, "b": 11, "kategori": "Krever motsatt steg"}, {"numerator": -1, "denominator": 1, "b": 0, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 4, "b": 11, "kategori": "Brøk som stigningstall"}, {"numerator": -8, "denominator": 3, "b": -14, "kategori": "Krever motsatt steg"}, {"numerator": -2, "denominator": 3, "b": 5, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 12, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": -1, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 2, "b": -1, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 3, "b": 4, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": -13, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": -13, "kategori": "Heltall som stigningstall"}, {"numerator": 7, "denominator": 2, "b": 11, "kategori": "Krever motsatt steg"}, {"numerator": -3, "denominator": 4, "b": 7, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 2, "b": -13, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": 10, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": -10, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 2, "b": -12, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": 3, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": -1, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": 3, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 10, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": -12, "kategori": "Brøk som stigningstall"}, {"numerator": 8, "denominator": 3, "b": 15, "kategori": "Krever motsatt steg"}, {"numerator": 2, "denominator": 3, "b": 4, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": -5, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 2, "b": 2, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": 5, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 1, "b": 7, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 3, "b": -1, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": 9, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": -14, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 3, "b": -3, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": -4, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": -7, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 1, "b": 4, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 2, "b": 3, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 6, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": -11, "kategori": "Brøk som stigningstall"}, {"numerator": -5, "denominator": 3, "b": -14, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 2, "b": 1, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": -1, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 3, "b": -4, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 1, "b": -6, "kategori": "Heltall som stigningstall"}, {"numerator": 7, "denominator": 2, "b": 13, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 2, "b": 14, "kategori": "Krever motsatt steg"}, {"numerator": -2, "denominator": 3, "b": -2, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": 1, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": 13, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 3, "b": -5, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 1, "b": -3, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 2, "b": 0, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": 6, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 3, "b": 6, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 2, "b": 12, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 1, "b": 5, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 1, "b": 9, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 2, "b": 13, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 1, "b": -12, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 3, "b": 11, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": 0, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 1, "b": 4, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 2, "b": -13, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": -6, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": -6, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": -3, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 3, "b": 13, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": -14, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 2, "b": 4, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 2, "b": 7, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 2, "b": -11, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": -5, "kategori": "Brøk som stigningstall"}, {"numerator": 8, "denominator": 3, "b": 13, "kategori": "Krever motsatt steg"}, {"numerator": -3, "denominator": 2, "b": -8, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": -15, "kategori": "Krever motsatt steg"}, {"numerator": -1, "denominator": 3, "b": 10, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": -6, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 3, "b": 11, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": -11, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 3, "b": -6, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": 6, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": -14, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 1, "b": -3, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 3, "b": -8, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": -11, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": 12, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": -5, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": 12, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 2, "b": -14, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 12, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": -3, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": 14, "kategori": "Heltall som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 0, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": -3, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": 12, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 13, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 1, "b": 12, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 3, "b": 9, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": -10, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": 4, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": -12, "kategori": "Heltall som stigningstall"}, {"numerator": 4, "denominator": 3, "b": -1, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": 9, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 1, "b": 9, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 4, "b": -4, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": 10, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 1, "b": 11, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 1, "b": -1, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 4, "b": -7, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": 2, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": -11, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 1, "b": 1, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 3, "b": 1, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": 3, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 3, "b": 6, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": 2, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 1, "b": -2, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 1, "b": 4, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 4, "b": -8, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 2, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": -2, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 2, "b": -4, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": -10, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 1, "b": 1, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 1, "b": 7, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 1, "b": -13, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 3, "b": -4, "kategori": "Brøk som stigningstall"}, {"numerator": 5, "denominator": 3, "b": 16, "kategori": "Krever motsatt steg"}, {"numerator": 4, "denominator": 1, "b": 10, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 2, "b": 4, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": 8, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 2, "b": 1, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 1, "b": -13, "kategori": "Heltall som stigningstall"}, {"numerator": 8, "denominator": 3, "b": 12, "kategori": "Krever motsatt steg"}, {"numerator": -1, "denominator": 3, "b": 11, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": 8, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 3, "b": -9, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 3, "b": -7, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": 14, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": 3, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 10, "kategori": "Brøk som stigningstall"}, {"numerator": 5, "denominator": 2, "b": 14, "kategori": "Krever motsatt steg"}, {"numerator": -3, "denominator": 4, "b": 2, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": 7, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": 2, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": 1, "kategori": "Heltall som stigningstall"}, {"numerator": 8, "denominator": 3, "b": 16, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 2, "b": -6, "kategori": "Brøk som stigningstall"}, {"numerator": -5, "denominator": 2, "b": -15, "kategori": "Krever motsatt steg"}, {"numerator": 4, "denominator": 1, "b": 2, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 3, "b": -11, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 1, "b": 12, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 2, "b": -3, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": 0, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": 10, "kategori": "Brøk som stigningstall"}, {"numerator": -8, "denominator": 3, "b": -12, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 1, "b": -10, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 3, "b": -1, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 1, "b": -9, "kategori": "Heltall som stigningstall"}, {"numerator": 5, "denominator": 3, "b": 13, "kategori": "Krever motsatt steg"}, {"numerator": -3, "denominator": 1, "b": -9, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 3, "b": -11, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 3, "b": 13, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": -3, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 2, "b": -3, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 4, "b": -12, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": 9, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 1, "b": 8, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 1, "b": 9, "kategori": "Heltall som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 9, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": -14, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": 5, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 3, "b": 12, "kategori": "Brøk som stigningstall"}, {"numerator": -4, "denominator": 1, "b": -4, "kategori": "Heltall som stigningstall"}, {"numerator": -5, "denominator": 2, "b": -12, "kategori": "Krever motsatt steg"}, {"numerator": 5, "denominator": 2, "b": 13, "kategori": "Krever motsatt steg"}, {"numerator": -1, "denominator": 3, "b": 8, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 1, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 4, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 2, "b": 16, "kategori": "Krever motsatt steg"}, {"numerator": -2, "denominator": 3, "b": -3, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": 3, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 1, "b": -5, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 1, "b": 11, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 1, "b": 2, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 1, "b": 13, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 1, "b": -2, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 1, "b": 0, "kategori": "Heltall som stigningstall"}, {"numerator": -7, "denominator": 3, "b": -16, "kategori": "Krever motsatt steg"}, {"numerator": -3, "denominator": 1, "b": 0, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 1, "b": 10, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 1, "b": 8, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 1, "b": -11, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 4, "b": 6, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": -6, "kategori": "Brøk som stigningstall"}, {"numerator": -7, "denominator": 3, "b": -12, "kategori": "Krever motsatt steg"}, {"numerator": 3, "denominator": 2, "b": -5, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 9, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": 0, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 1, "b": -2, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 4, "b": -1, "kategori": "Brøk som stigningstall"}, {"numerator": 2, "denominator": 3, "b": -7, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": -4, "kategori": "Heltall som stigningstall"}, {"numerator": -4, "denominator": 1, "b": 0, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 4, "b": 8, "kategori": "Brøk som stigningstall"}, {"numerator": -1, "denominator": 2, "b": -7, "kategori": "Brøk som stigningstall"}, {"numerator": -8, "denominator": 3, "b": -13, "kategori": "Krever motsatt steg"}, {"numerator": 7, "denominator": 2, "b": 16, "kategori": "Krever motsatt steg"}, {"numerator": -3, "denominator": 1, "b": 10, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 4, "b": -13, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": 4, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 1, "b": -8, "kategori": "Heltall som stigningstall"}, {"numerator": -7, "denominator": 2, "b": -12, "kategori": "Krever motsatt steg"}, {"numerator": 4, "denominator": 3, "b": 11, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 1, "b": -7, "kategori": "Heltall som stigningstall"}, {"numerator": -1, "denominator": 1, "b": -14, "kategori": "Heltall som stigningstall"}, {"numerator": 2, "denominator": 1, "b": -11, "kategori": "Heltall som stigningstall"}, {"numerator": 1, "denominator": 3, "b": 14, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 4, "b": -1, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": -8, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 1, "b": -13, "kategori": "Heltall som stigningstall"}, {"numerator": 3, "denominator": 2, "b": 6, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 1, "b": -3, "kategori": "Heltall som stigningstall"}, {"numerator": -3, "denominator": 2, "b": 2, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 3, "b": -10, "kategori": "Brøk som stigningstall"}, {"numerator": 4, "denominator": 3, "b": 3, "kategori": "Brøk som stigningstall"}, {"numerator": 3, "denominator": 1, "b": -4, "kategori": "Heltall som stigningstall"}, {"numerator": -2, "denominator": 3, "b": 7, "kategori": "Brøk som stigningstall"}, {"numerator": -3, "denominator": 2, "b": -9, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": -7, "kategori": "Brøk som stigningstall"}, {"numerator": -2, "denominator": 3, "b": 11, "kategori": "Brøk som stigningstall"}, {"numerator": 1, "denominator": 2, "b": 11, "kategori": "Brøk som stigningstall"}, {"numerator": 7, "denominator": 3, "b": 14, "kategori": "Krever motsatt steg"}, {"numerator": 7, "denominator": 3, "b": 11, "kategori": "Krever motsatt steg"}];
+
+
+const TASKS_PER_PAGE =
+    4;
+
+
+const MIN =
+    -16;
+
+
+const MAX =
+    16;
+
+
+const LABEL_STEP =
+    2;
+
+
+
+let selectedTasks = [];
+
+function shuffleArray(array) {
+    const copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+}
+
+function takeRandom(array, count) {
+    return shuffleArray(array).slice(0, count);
+}
+
+function generateWorksheet() {
+    const integerCount = Math.max(0, Math.floor(Number(document.getElementById("countInteger").value) || 0));
+    const fractionCount = Math.max(0, Math.floor(Number(document.getElementById("countFraction").value) || 0));
+    const challengeCount = Math.max(0, Math.floor(Number(document.getElementById("countChallenge").value) || 0));
+
+    const integerTasks = tasks.filter(t => t.kategori === "Heltall som stigningstall");
+    const fractionTasks = tasks.filter(t => t.kategori === "Brøk som stigningstall");
+    const challengeTasks = tasks.filter(t => t.kategori === "Krever motsatt steg");
+
+    if (integerCount > integerTasks.length || fractionCount > fractionTasks.length || challengeCount > challengeTasks.length) {
+        alert(`Det finnes ikke nok oppgaver i banken.\n\nHeltall: ${integerTasks.length}\nBrøk: ${fractionTasks.length}\nKrever motsatt steg: ${challengeTasks.length}`);
+        return;
+    }
+
+    selectedTasks = [
+        ...takeRandom(integerTasks, integerCount),
+        ...takeRandom(fractionTasks, fractionCount),
+        ...takeRandom(challengeTasks, challengeCount)
+    ];
+
+    if (document.getElementById("randomOrder").checked) {
+        selectedTasks = shuffleArray(selectedTasks);
+    }
+
+    const total = selectedTasks.length;
+    const pages = Math.ceil(total / TASKS_PER_PAGE);
+    document.getElementById("totalInfo").textContent = `${total} oppgaver • ${pages} side${pages === 1 ? "" : "r"}`;
+    document.getElementById("bankInfo").textContent = `Tilgjengelig i banken: ${integerTasks.length} heltall • ${fractionTasks.length} brøk • ${challengeTasks.length} motsatt steg`;
+    buildWorksheet();
+}
+
+// ======================================================
+// SVG-HJELPER
+// ======================================================
+
+function el(
+    name,
+    attrs = {}
+) {
+
+
+    const node =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            name
+        );
+
+
+    for (
+        const [key, value]
+        of Object.entries(attrs)
+    ) {
+
+        node.setAttribute(
+            key,
+            value
+        );
+
+    }
+
+
+    return node;
+
+}
+
+
+
+// ======================================================
+// FUNKSJONSUTTRYKK
+// ======================================================
+
+function functionLatex(
+    numerator,
+    denominator,
+    b
+) {
+
+
+    let slopePart =
+        "";
+
+
+    if (
+        denominator === 1
+    ) {
+
+
+        if (
+            numerator === 1
+        ) {
+
+            slopePart =
+                "x";
+
+        }
+
+
+        else if (
+            numerator === -1
+        ) {
+
+            slopePart =
+                "-x";
+
+        }
+
+
+        else {
+
+            slopePart =
+                numerator +
+                "x";
+
+        }
+
+    }
+
+
+    else {
+
+
+        if (
+            numerator < 0
+        ) {
+
+            slopePart =
+
+                "-\\frac{" +
+
+                Math.abs(
+                    numerator
+                ) +
+
+                "}{" +
+
+                denominator +
+
+                "}\\,x";
+
+        }
+
+
+        else {
+
+            slopePart =
+
+                "\\frac{" +
+
+                numerator +
+
+                "}{" +
+
+                denominator +
+
+                "}\\,x";
+
+        }
+
+    }
+
+
+    let interceptPart =
+        "";
+
+
+    if (
+        b > 0
+    ) {
+
+        interceptPart =
+            " + " +
+            b;
+
+    }
+
+
+    else if (
+        b < 0
+    ) {
+
+        interceptPart =
+            " - " +
+            Math.abs(b);
+
+    }
+
+
+    return (
+
+        "\\[" +
+
+        "y = " +
+
+        slopePart +
+
+        interceptPart +
+
+        "\\]"
+
+    );
+
+}
+
+
+
+// ======================================================
+// KOORDINATSYSTEM
+// ======================================================
+
+function drawBlankGraph(
+    svg
+) {
+
+
+    svg.innerHTML =
+        "";
+
+
+    const WIDTH =
+        420;
+
+
+    const HEIGHT =
+        420;
+
+
+    const LEFT =
+        44;
+
+
+    const RIGHT =
+        20;
+
+
+    const TOP =
+        20;
+
+
+    const BOTTOM =
+        42;
+
+
+    const PLOT_WIDTH =
+        WIDTH -
+        LEFT -
+        RIGHT;
+
+
+    const PLOT_HEIGHT =
+        HEIGHT -
+        TOP -
+        BOTTOM;
+
+
+    const sx = x =>
+
+        LEFT +
+
+        (
+            x - MIN
+        )
+
+        /
+
+        (
+            MAX - MIN
+        )
+
+        *
+
+        PLOT_WIDTH;
+
+
+    const sy = y =>
+
+        TOP +
+
+        (
+            MAX - y
+        )
+
+        /
+
+        (
+            MAX - MIN
+        )
+
+        *
+
+        PLOT_HEIGHT;
+
+
+
+    // --------------------------------------------------
+    // BAKGRUNN
+    // --------------------------------------------------
+
+    svg.appendChild(
+
+        el(
+            "rect",
+            {
+
+                x:
+                    0,
+
+                y:
+                    0,
+
+                width:
+                    WIDTH,
+
+                height:
+                    HEIGHT,
+
+                fill:
+                    "white"
+
+            }
+        )
+
+    );
+
+
+
+    // --------------------------------------------------
+    // RUTENETT
+    //
+    // ÉN RUTE = 1 ENHET.
+    //
+    // AKSEMERKING_STEG påvirker bare hvilke tall som
+    // skrives, ikke selve rutenettet.
+    // --------------------------------------------------
+
+    for (
+        let i = MIN;
+        i <= MAX;
+        i++
+    ) {
+
+
+        if (
+            i !== 0
+        ) {
+
+
+            svg.appendChild(
+
+                el(
+                    "line",
+                    {
+
+                        x1:
+                            sx(i),
+
+                        y1:
+                            TOP,
+
+                        x2:
+                            sx(i),
+
+                        y2:
+                            TOP +
+                            PLOT_HEIGHT,
+
+                        stroke:
+                            "#e3e6eb",
+
+                        "stroke-width":
+                            0.8
+
+                    }
+                )
+
+            );
+
+
+            svg.appendChild(
+
+                el(
+                    "line",
+                    {
+
+                        x1:
+                            LEFT,
+
+                        y1:
+                            sy(i),
+
+                        x2:
+                            LEFT +
+                            PLOT_WIDTH,
+
+                        y2:
+                            sy(i),
+
+                        stroke:
+                            "#e3e6eb",
+
+                        "stroke-width":
+                            0.8
+
+                    }
+                )
+
+            );
+
+        }
+
+    }
+
+
+
+    const axisColor =
+        "#374151";
+
+
+    const axisY =
+        sy(0);
+
+
+    const axisX =
+        sx(0);
+
+
+
+    // --------------------------------------------------
+    // x-AKSE
+    // --------------------------------------------------
+
+    svg.appendChild(
+
+        el(
+            "line",
+            {
+
+                x1:
+                    LEFT,
+
+                y1:
+                    axisY,
+
+                x2:
+                    LEFT +
+                    PLOT_WIDTH -
+                    7,
+
+                y2:
+                    axisY,
+
+                stroke:
+                    axisColor,
+
+                "stroke-width":
+                    2
+
+            }
+        )
+
+    );
+
+
+
+    // --------------------------------------------------
+    // y-AKSE
+    // --------------------------------------------------
+
+    svg.appendChild(
+
+        el(
+            "line",
+            {
+
+                x1:
+                    axisX,
+
+                y1:
+                    TOP +
+                    PLOT_HEIGHT,
+
+                x2:
+                    axisX,
+
+                y2:
+                    TOP +
+                    7,
+
+                stroke:
+                    axisColor,
+
+                "stroke-width":
+                    2
+
+            }
+        )
+
+    );
+
+
+
+    // --------------------------------------------------
+    // PIL x
+    // --------------------------------------------------
+
+    const xEnd =
+        LEFT +
+        PLOT_WIDTH;
+
+
+    svg.appendChild(
+
+        el(
+            "path",
+            {
+
+                d:
+                `
+                M ${xEnd}
+                  ${axisY}
+
+                L ${xEnd - 11}
+                  ${axisY - 6}
+
+                L ${xEnd - 11}
+                  ${axisY + 6}
+
+                Z
+                `,
+
+                fill:
+                    axisColor
+
+            }
+        )
+
+    );
+
+
+
+    // --------------------------------------------------
+    // PIL y
+    // --------------------------------------------------
+
+    svg.appendChild(
+
+        el(
+            "path",
+            {
+
+                d:
+                `
+                M ${axisX}
+                  ${TOP}
+
+                L ${axisX - 6}
+                  ${TOP + 11}
+
+                L ${axisX + 6}
+                  ${TOP + 11}
+
+                Z
+                `,
+
+                fill:
+                    axisColor
+
+            }
+        )
+
+    );
+
+
+
+    // --------------------------------------------------
+    // TALL PÅ AKSENE
+    // --------------------------------------------------
+
+    for (
+        let i = MIN;
+        i <= MAX;
+        i++
+    ) {
+
+
+        if (
+            i === 0
+        ) {
+
+            continue;
+
+        }
+
+
+        if (
+            i % LABEL_STEP !== 0
+        ) {
+
+            continue;
+
+        }
+
+
+
+        const xText =
+            el(
+                "text",
+                {
+
+                    x:
+                        sx(i),
+
+                    y:
+                        axisY +
+                        17,
+
+                    "text-anchor":
+                        "middle",
+
+                    fill:
+                        "#667085",
+
+                    "font-size":
+                        "10"
+
+                }
+            );
+
+
+        xText.textContent =
+            i;
+
+
+        svg.appendChild(
+            xText
+        );
+
+
+
+        const yText =
+            el(
+                "text",
+                {
+
+                    x:
+                        axisX -
+                        8,
+
+                    y:
+                        sy(i) +
+                        4,
+
+                    "text-anchor":
+                        "end",
+
+                    fill:
+                        "#667085",
+
+                    "font-size":
+                        "10"
+
+                }
+            );
+
+
+        yText.textContent =
+            i;
+
+
+        svg.appendChild(
+            yText
+        );
+
+    }
+
+
+
+    // --------------------------------------------------
+    // NULL
+    // --------------------------------------------------
+
+    const zero =
+        el(
+            "text",
+            {
+
+                x:
+                    axisX -
+                    7,
+
+                y:
+                    axisY +
+                    16,
+
+                "text-anchor":
+                    "end",
+
+                fill:
+                    "#667085",
+
+                "font-size":
+                    "10"
+
+            }
+        );
+
+
+    zero.textContent =
+        "0";
+
+
+    svg.appendChild(
+        zero
+    );
+
+
+
+    // --------------------------------------------------
+    // x OG y
+    // --------------------------------------------------
+
+    const xLabel =
+        el(
+            "text",
+            {
+
+                x:
+                    xEnd -
+                    2,
+
+                y:
+                    axisY -
+                    10,
+
+                "text-anchor":
+                    "end",
+
+                fill:
+                    axisColor,
+
+                "font-size":
+                    "14",
+
+                "font-style":
+                    "italic"
+
+            }
+        );
+
+
+    xLabel.textContent =
+        "x";
+
+
+    svg.appendChild(
+        xLabel
+    );
+
+
+
+    const yLabel =
+        el(
+            "text",
+            {
+
+                x:
+                    axisX +
+                    9,
+
+                y:
+                    TOP +
+                    14,
+
+                fill:
+                    axisColor,
+
+                "font-size":
+                    "14",
+
+                "font-style":
+                    "italic"
+
+            }
+        );
+
+
+    yLabel.textContent =
+        "y";
+
+
+    svg.appendChild(
+        yLabel
+    );
+
+}
+
+
+
+// ======================================================
+// BYGG ARBEIDSARK
+// ======================================================
+
+function buildWorksheet() {
+
+
+    const area =
+        document.getElementById(
+            "printArea"
+        );
+
+
+    area.innerHTML =
+        "";
+
+
+    let currentPage =
+        null;
+
+
+    const mathElements =
+        [];
+
+
+    selectedTasks.forEach(
+
+        (
+            task,
+            index
+        ) => {
+
+
+            if (
+                index %
+                TASKS_PER_PAGE ===
+                0
+            ) {
+
+
+                currentPage =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                currentPage.className =
+                    "print-page";
+
+
+                area.appendChild(
+                    currentPage
+                );
+
+            }
+
+
+
+            const taskBox =
+                document.createElement(
+                    "div"
+                );
+
+
+            taskBox.className =
+                "task";
+
+
+
+            const number =
+                document.createElement(
+                    "div"
+                );
+
+
+            number.className =
+                "task-number";
+
+
+            number.textContent =
+                `Oppgave ${index + 1}`;
+
+
+            taskBox.appendChild(
+                number
+            );
+
+
+
+            const expression =
+                document.createElement(
+                    "div"
+                );
+
+
+            expression.className =
+                "expression";
+
+
+            expression.innerHTML =
+                functionLatex(
+                    task.numerator,
+                    task.denominator,
+                    task.b
+                );
+
+
+            taskBox.appendChild(
+                expression
+            );
+
+
+            mathElements.push(
+                expression
+            );
+
+
+
+            const graphHolder =
+                document.createElement(
+                    "div"
+                );
+
+
+            graphHolder.className =
+                "graph-holder";
+
+
+
+            const svg =
+                el(
+                    "svg",
+                    {
+
+                        class:
+                            "graph",
+
+                        viewBox:
+                            "0 0 420 420"
+
+                    }
+                );
+
+
+            graphHolder.appendChild(
+                svg
+            );
+
+
+            taskBox.appendChild(
+                graphHolder
+            );
+
+
+            drawBlankGraph(
+                svg
+            );
+
+
+            currentPage.appendChild(
+                taskBox
+            );
+
+        }
+
+    );
+
+
+    if (
+        window.MathJax &&
+        MathJax.typesetPromise
+    ) {
+
+        MathJax.typesetPromise(
+            mathElements
+        );
+
+    }
+
+}
+
+
+
+// ======================================================
+// PRINT
+// ======================================================
+
+function printWorksheet() {
+
+
+    if (
+        window.MathJax &&
+        MathJax.typesetPromise
+    ) {
+
+
+        MathJax.typesetPromise(
+            [
+                document.getElementById(
+                    "printArea"
+                )
+            ]
+        ).then(
+
+            () => {
+
+                window.print();
+
+            }
+
+        ).catch(
+
+            () => {
+
+                window.print();
+
+            }
+
+        );
+
+    }
+
+
+    else {
+
+        window.print();
+
+    }
+
+}
+
+
+</script>
+
+</body>
+
+</html>
